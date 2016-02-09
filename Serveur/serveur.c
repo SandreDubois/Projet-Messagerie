@@ -53,8 +53,8 @@ int Initialisation() {
 }
 
 /* Initialisation.
- * Creation du serveur en précisant le service ou numéro de port.
- * renvoie 1 si ça c'est bien passé 0 sinon
+ * Creation du serveur en prÔøΩcisant le service ou numÔøΩro de port.
+ * renvoie 1 si ÔøΩa c'est bien passÔøΩ 0 sinon
  */
 int InitialisationAvecService(char *service) {
 	int n;
@@ -240,7 +240,7 @@ int ReceptionBinaire(char *donnees, size_t tailleMax) {
 	}
 }
 
-/* Envoie des données au client en précisant leur taille.
+/* Envoie des donnÔøΩes au client en prÔøΩcisant leur taille.
  */
 int EmissionBinaire(char *donnees, size_t taille) {
 	int retour = 0;
@@ -266,3 +266,40 @@ void TerminaisonClient() {
 void Terminaison() {
 	close(socketEcoute);
 }
+
+/*_____________________________________________DEBUT_______________________________________________*/
+
+int Connexion(){
+	char *p;
+	char login[30];
+	char paswd[30];
+	int i=0;
+	char *authentification = NULL;
+	authentification = Reception();
+	p = strchr(authentification,'/');
+	p++;
+	while(*p !='/'){
+		login[i]=*p;
+		i++;
+		p++;
+	}
+	login[i]='\0';
+	i=0;
+	p++;
+	while(*p !='/'){
+		paswd[i]=*p;
+		i++;
+		p++;
+	}
+	paswd[i]='\0';
+	//
+	//fichier = fopen("/Serveur/identifiants.txt", "r");
+	//while(fichier!= EOF)   //rechercher dans le fichier
+	//{
+	//	if (fichier !=)
+
+	//	fclose(fichier); // On ferme le fichier qui a √©t√© ouvert
+	//}
+
+	    return 0;
+	}
