@@ -253,6 +253,8 @@ int EmissionBinaire(char *donnees, size_t taille) {
 	}
 }
 
+<<<<<<< HEAD
+=======
 
 
 /* Ferme la connexion avec le client.
@@ -269,14 +271,21 @@ void Terminaison() {
 
 /*_____________________________________________DEBUT_______________________________________________*/
 
+>>>>>>> fd03d90f6eac893d3acf58a099b3d609e7618746
 int Connexion(){
 	char *p;
 	char login[30];
 	char paswd[30];
 	int i=0;
+<<<<<<< HEAD
+	char *athentification = NULL;
+	athentification = Reception();
+	p = strchr(athentification,'/');
+=======
 	char *authentification = NULL;
 	authentification = Reception();
 	p = strchr(authentification,'/');
+>>>>>>> fd03d90f6eac893d3acf58a099b3d609e7618746
 	p++;
 	while(*p !='/'){
 		login[i]=*p;
@@ -287,11 +296,19 @@ int Connexion(){
 	i=0;
 	p++;
 	while(*p !='/'){
+<<<<<<< HEAD
+		pswd[i]=*p;
+		i++;
+		p++;
+	}
+pswd[i]='\0';
+=======
 		paswd[i]=*p;
 		i++;
 		p++;
 	}
 	paswd[i]='\0';
+>>>>>>> fd03d90f6eac893d3acf58a099b3d609e7618746
 	//
 	//fichier = fopen("/Serveur/identifiants.txt", "r");
 	//while(fichier!= EOF)   //rechercher dans le fichier
@@ -302,4 +319,21 @@ int Connexion(){
 	//}
 
 	    return 0;
+<<<<<<< HEAD
+		}
+}
+
+
+/* Ferme la connexion avec le client.
+ */
+void TerminaisonClient() {
+	close(socketService);
+}
+
+/* Arrete le serveur.
+ */
+void Terminaison() {
+	close(socketEcoute);
+=======
+>>>>>>> fd03d90f6eac893d3acf58a099b3d609e7618746
 }

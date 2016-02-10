@@ -40,6 +40,13 @@ int main() {
 /*________________________________________Notre Partie__________________________________________*/
 
 	system("clear");
+<<<<<<< HEAD
+	/*Connexion au serveur*/
+	while (Connexion() != 0);
+
+	/*Demande du nombre de messages*/
+	if (Inbox() != 0){
+=======
 	int choix = 0;
 	int retourAuthentification = 1;
 	int retourDeconnexion = 1;
@@ -70,6 +77,7 @@ int main() {
 		}
 		printf("Redirection dans 5 secondes. Veuillez patientez.\n");
 		system("sleep 5");
+<<<<<<< HEAD
 	} while(retourDeconnexion != 0 && retourAuthentification != 0);
 
 	/*Boucle principale pour l'éxecution de toutes les fonctions*/
@@ -120,5 +128,31 @@ int main() {
 			system("sleep 5");
 		} while(choix == 6 && retourDeconnexion != 0);
 	}
+=======
+	} while(choix != 2 && retourConnexion != 0);
+
+	Menu_Principal();
+
+
+
+	/*Demande du nombre de messages*/
+	if (Inbox()){
+>>>>>>> fd03d90f6eac893d3acf58a099b3d609e7618746
+		return -1;
+	}
+
+	/*Suppression d'un message*/
+<<<<<<< HEAD
+	if (Delete() != 0){
+=======
+	if (Delete()){
+>>>>>>> fd03d90f6eac893d3acf58a099b3d609e7618746
+		return -1;
+	}
+
+	/*Deconnexion*/
+	Deconnexion();
+
+>>>>>>> a463084667e83f53bd0f6255e26dd84e59a232b8
 	return 0;
 }

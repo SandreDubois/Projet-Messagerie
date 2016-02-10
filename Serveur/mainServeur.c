@@ -3,6 +3,7 @@
 #include "serveur.h"
 
 int main() {
+  	//Variables
 	char *message = NULL;
 	char reponse[20];
 
