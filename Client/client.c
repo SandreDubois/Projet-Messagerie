@@ -213,14 +213,13 @@ int Connexion(){
 
 	/*Récupération de l'adresse mail*/
 	printf("Veuillez saisir votre adresse mail :\n");
+	FreeBuffer(); /*On vide le buffer, pour eviter toutes erreurs ultérieure*/
 	fgets(adresse_client, 30, stdin);	/*On récupère la saisie du clavier qui est l'adresse mail dans la variable "adresse_client"*/
-	FreeBuffer();	/*On vide le buffer, pour eviter toutes erreurs ultérieure*/
 	adresse_client[strlen(adresse_client)-1] = '\0';	/*On retire le "\n" à la requête  car fgets met automatiquement un "\n" à la fin*/
 
 	/*Récupération du mot de passe*/
 	printf("Veuillez saisir votre mot de passe :\n");
 	fgets(mdp_client, 20, stdin);	/*On récupère la saisie du clavier qui est le mot de passe dans la variable "mdp_client"*/
-	FreeBuffer();	/*On vide le buffer*/
 	mdp_client[strlen(mdp_client)-1] = '\0'; /*Suppression du "\n" à la fin*/
 
 	/*Concatenation des différents éléments*/
@@ -254,7 +253,50 @@ int Connexion(){
 	return 0;	/*La fonction retourne 0 si elle s'execute correctement*/
 }
 
-/*_____________________________________________Affichage menu_____________________________________________*/
+/*____________________________________Affichage menu connexion_____________________________________________*/
+void Menu_Connexion(){
+	printf("*****************************MENU*****************************\n");
+	printf("*                                                            *\n");
+	printf("*                         Messagerie                         *\n");
+	printf("*                                                            *\n");
+	printf("*                      Menu de Connexion                     *\n");
+	printf("*                                                            *\n");
+	printf("*                                                            *\n");
+	printf("**************************************************************\n");
+  printf("************** 1 - Pour vous authentifier ********************\n");
+  printf("************** 2 - Pour vous déconnecter  ********************\n");
+	printf("**************************************************************\n");
+	printf("***Projet de Frederic FERRERA, Said SARMA et Sandre DUBOIS****\n");
+	printf("\n");
+}
+
+/*____________________________________Affichage menu principal_____________________________________________*/
+void Menu_Principal(){
+	printf("*****************************MENU*****************************\n");
+	printf("*                                                            *\n");
+	printf("*                         Messagerie                         *\n");
+	printf("*                                                            *\n");
+	printf("*                       Menu Principal                       *\n");
+	printf("*                                                            *\n");
+	printf("*                                                            *\n");
+	printf("**************************************************************\n");
+  printf("*********** 1 - Pour consulter votre messagerie   ************\n");
+  printf("*********** 2 - Pour lire un mail                 ************\n");
+	printf("*********** 3 - Pour supprimer un mail            ************\n");
+	printf("*********** 4 - Pour envoyer un mail              ************\n");
+	printf("*********** 5 - Pour obtenir le nombre de message ************\n");
+	printf("*********** 6 - Pour déconnecter                  ************\n");
+	printf("**************************************************************\n");
+	printf("***Projet de Frederic FERRERA, Said SARMA et Sandre DUBOIS****\n");
+	printf("\n");
+}
+
+/*_______________________________Récupération du choix de l'utilisateur___________________________________*/
+int Choix(){
+	int choix;
+	scanf("%d", &choix);
+	return choix;
+}
 
 /*____________________________________Fonction nombres de messages________________________________________*/
 int Inbox(){

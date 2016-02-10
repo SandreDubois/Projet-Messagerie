@@ -40,9 +40,33 @@ int main() {
 /*________________________________________Notre Partie__________________________________________*/
 
 	system("clear");
-	
-	/*Connexion au serveur*/
-	while (Connexion());
+	int choix = 0;
+	int retourConnexion = 1;
+
+ 	/*Affichage du menu de connexion*/
+	do {
+		system("clear");
+		Menu_Connexion();
+		choix = Choix();
+		system("clear");
+		switch (choix) {
+			case 1:
+				/*Connexion au serveur*/
+				retourConnexion = Connexion();
+				break;
+
+			case 2:
+				/*Deconnexion*/
+				Deconnexion();
+				break;
+		}
+		printf("Redirection dans 5 secondes. Veuillez patientez.\n");
+		system("sleep 5");
+	} while(choix != 2 && retourConnexion != 0);
+
+	Menu_Principal();
+
+
 
 	/*Demande du nombre de messages*/
 	if (Inbox()){

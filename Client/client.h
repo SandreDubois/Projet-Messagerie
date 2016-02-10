@@ -45,7 +45,13 @@ void Terminaison();
 
 void FreeBuffer();
 
+int Choix();
+
+void Menu_Connexion();
+
 int Connexion();
+
+void Menu_Principal();
 
 int Inbox();
 
