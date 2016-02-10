@@ -185,83 +185,6 @@ int EmissionBinaire(char *donnees, size_t taille) {
  */
 void Terminaison() {
 	close(socketClient);
-<<<<<<< HEAD
-}
-
-/*________________________________________Notre Partie__________________________________________*/
-typedef struct{
-	char adresse_client[30];
-	char mdp_client[20];
-} identifiants;
-
-/* Connexion au serveur*/
-int Connexion(){
-	identifiants id;
-	char *message = NULL;
-	printf("Veuillez saisir votre adresse mail :\n");
-	fgets(id.adresse_client, 30, stdin);
-	if(Emission(id.adresse_client)!=1) {
-		printf("Erreur lors de l'émission de l'adresse mail.\n");
-		return 1;
-	}
-
-	printf("Veuillez saisir votre mot de passe :\n");
-	fgets(id.mdp_client, 20, stdin);
-	if(Emission(id.mdp_client)!=1) {
-		printf("Erreur lors de l'émission de l'adresse mail du mot de passe.\n");
-		return 1;
-	}
-	message = Reception();
-	if(!strcmp(message,"101")) {
-		printf("Authentification Réussie.\n");
-		return 0;
-	} else {
-		if (!strcmp(message,"202")){
-			printf("Erreur d'authentification, votre adresse mail et le mot de passe ne correspondent pas.\n");
-			return 1;
-		} else {
-			printf("Erreur inconnue.\n");
-			return 1;
-		}
-	}
-	return 0;
-}
-
-int Inbox(){
-	char *message = NULL;
-	if(Emission("Inbox\n")!=1) {
-		printf("Erreur d'emission lors de l'envoie de Inbox.\n");
-		return 1;
-	}
-	message = Reception();
-	if(message != NULL) {
-		printf("Vous avez %s messages.\n", message);
-		free(message);
-	} else {
-		printf("Erreur de lors de la reception du nombre de message.\n");
-		return 1;
-	}
-	return 0;
-}
-
-int Delete(){
-	char *message = NULL;
-	char num_message[3];
-	printf("Quel message voulez-vous effacez :\n");
-	fgets(num_message, 3, stdin);
-	if(Emission(num_message)!=1) {
-		printf("Erreur lors de l'émission du fichier à effacer.\n");
-		return 1;
-	}
-	message = Reception();
-	if(!strcmp(message,"101")) {
-		printf("Votre message a bien été supprimé.\n");
-		return 0;
-	} else {
-		if (!strcmp(message,"505")){
-=======
-
-
 }
 
 /*___________________________________________DEBUT______________________________________________*/
@@ -487,7 +410,6 @@ int Delete(){
 		return 0;
 	} else {
 		if (rep == 505){
->>>>>>> fd03d90f6eac893d3acf58a099b3d609e7618746
 			printf("Erreur lors de la suppression, le message n'a pas pu etre effacé.\n");
 			return 1;
 		} else {
@@ -498,7 +420,6 @@ int Delete(){
 	return 0;
 }
 
-<<<<<<< HEAD
 /*__________________________________Envoie d'un message______________________________________*/
 
 
@@ -542,14 +463,7 @@ int Inbox(){
 	return 0;	/*La fonction retourne 0 si elle s'execute correctement*/
 }
 
-
-/*____________________________________Déconnexion____________________________________________*/
-=======
-<<<<<<< HEAD
-=======
 /*____________________________________Déconnexion________________________________________*/
->>>>>>> fd03d90f6eac893d3acf58a099b3d609e7618746
->>>>>>> a463084667e83f53bd0f6255e26dd84e59a232b8
 int Deconnexion(){
 	int choix = 0;
 	do {
