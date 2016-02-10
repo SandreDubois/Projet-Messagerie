@@ -40,6 +40,7 @@ int main() {
 /*________________________________________Notre Partie__________________________________________*/
 
 	system("clear");
+	
 	/*Connexion au serveur*/
 	while (Connexion());
 
