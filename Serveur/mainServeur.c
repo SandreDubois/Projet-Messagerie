@@ -18,6 +18,7 @@ int main() {
 
 			if(message != NULL) {
 				printf("J'ai recu: %s\n", message);
+				Emission("Reply/101$*\n");
 				free(message);
 
 				if(Emission("Test de message serveur.\n")!=1) {
