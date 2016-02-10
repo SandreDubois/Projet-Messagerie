@@ -189,7 +189,7 @@ void Terminaison() {
 
 }
 
-/*_____________________________________________DEBUT_______________________________________________*/
+/*___________________________________________DEBUT______________________________________________*/
 
 /*Fonction pour vider le buffer*/
 void FreeBuffer()
@@ -201,8 +201,29 @@ void FreeBuffer()
     }
 }
 
-/*____________________________________Connexion au serveur________________________________________*/
-int Connexion(){
+/*______________________________Affichage menu connexion_______________________________________*/
+void Menu_Authentification(){
+	printf("***************************** MENU ****************************\n");
+	printf("*                                                             *\n");
+	printf("*                        TMP Messagerie                       *\n");
+	printf("*                                                             *\n");
+	printf("*                    Menu d'Authentification                  *\n");
+	printf("*                                                             *\n");
+	printf("*                                                             *\n");
+	printf("***************************************************************\n");
+  printf("*************** 1 - Pour vous authentifier ********************\n");
+  printf("*************** 2 - Pour vous déconnecter  ********************\n");
+	printf("***************************************************************\n");
+	printf("*                                                             *\n");
+	printf("* Projet de Frederic FERRERA, Saidaran SARMA et Sandre DUBOIS *\n");
+	printf("*                                                             *\n");
+	printf("***************************************************************\n");
+	printf("*** Copyright FRSSSD ************************** Version 1.0 ***\n");
+	printf("\n");
+}
+
+/*____________________________________Connexion au serveur______________________________________*/
+int Authentification(){
 	/*Déclaration des variables*/
 	char *message = NULL; /*Permet de stocker le message reçu du serveur*/
 	int rep;	/*Permet de stocker le type de réponse du serveur*/
@@ -210,12 +231,25 @@ int Connexion(){
 	char mdp_client[20];	/*Permet de stocker le mot de passe du client dans un tableau de 20 caractères'*/
 	char requete[5000];	/*Permet de stocker la requête complete concatené dans un tableau de 5000 caractères'*/
 
+	/*En-tête menu authentification*/
+	printf("***************************** MENU ****************************\n");
+	printf("*                                                             *\n");
+	printf("*                          Messagerie                         *\n");
+	printf("*                                                             *\n");
+	printf("*                    Menu d'Authentification                  *\n");
+	printf("*                                                             *\n");
+	printf("*                                                             *\n");
+	printf("***************************************************************\n");
+	printf("*** Copyright FRSSSD ************************** Version 1.0 ***\n");
+	printf("\n");
 
 	/*Récupération de l'adresse mail*/
 	printf("Veuillez saisir votre adresse mail :\n");
 	FreeBuffer(); /*On vide le buffer, pour eviter toutes erreurs ultérieure*/
 	fgets(adresse_client, 30, stdin);	/*On récupère la saisie du clavier qui est l'adresse mail dans la variable "adresse_client"*/
 	adresse_client[strlen(adresse_client)-1] = '\0';	/*On retire le "\n" à la requête  car fgets met automatiquement un "\n" à la fin*/
+
+	printf("\n");	/*Retour à la ligne pour un affichage plus clair*/
 
 	/*Récupération du mot de passe*/
 	printf("Veuillez saisir votre mot de passe :\n");
@@ -225,7 +259,7 @@ int Connexion(){
 	/*Concatenation des différents éléments*/
 	sprintf(requete, "Authentification/%s/%s$*\n", adresse_client, mdp_client);	/*On concatene les identifiants et mot de passe avec la requête
 																																								pour avoir la syntaxe "Authentification/identifiant/motdepasse$*"*/
-	printf("%s\n", requete);
+	/*printf("%s\n", requete);	/*Retour de la requête complete pour test*/
 
 	/*Test de l'émission de la requete*/
 	if(Emission(requete)!=1) { /*On test si l'envoie de la requete c'est faite correctement sinon erreur lors de l'émission*/
@@ -253,78 +287,88 @@ int Connexion(){
 	return 0;	/*La fonction retourne 0 si elle s'execute correctement*/
 }
 
-/*____________________________________Affichage menu connexion_____________________________________________*/
-void Menu_Connexion(){
-	printf("*****************************MENU*****************************\n");
-	printf("*                                                            *\n");
-	printf("*                         Messagerie                         *\n");
-	printf("*                                                            *\n");
-	printf("*                      Menu de Connexion                     *\n");
-	printf("*                                                            *\n");
-	printf("*                                                            *\n");
-	printf("**************************************************************\n");
-  printf("************** 1 - Pour vous authentifier ********************\n");
-  printf("************** 2 - Pour vous déconnecter  ********************\n");
-	printf("**************************************************************\n");
-	printf("***Projet de Frederic FERRERA, Said SARMA et Sandre DUBOIS****\n");
-	printf("\n");
-}
 
-/*____________________________________Affichage menu principal_____________________________________________*/
+/*________________________________Affichage menu principal______________________________________*/
 void Menu_Principal(){
-	printf("*****************************MENU*****************************\n");
-	printf("*                                                            *\n");
-	printf("*                         Messagerie                         *\n");
-	printf("*                                                            *\n");
-	printf("*                       Menu Principal                       *\n");
-	printf("*                                                            *\n");
-	printf("*                                                            *\n");
-	printf("**************************************************************\n");
-  printf("*********** 1 - Pour consulter votre messagerie   ************\n");
-  printf("*********** 2 - Pour lire un mail                 ************\n");
-	printf("*********** 3 - Pour supprimer un mail            ************\n");
-	printf("*********** 4 - Pour envoyer un mail              ************\n");
-	printf("*********** 5 - Pour obtenir le nombre de message ************\n");
-	printf("*********** 6 - Pour déconnecter                  ************\n");
-	printf("**************************************************************\n");
-	printf("***Projet de Frederic FERRERA, Said SARMA et Sandre DUBOIS****\n");
+	printf("***************************** MENU ****************************\n");
+	printf("*                                                             *\n");
+	printf("*                        TMP Messagerie                       *\n");
+	printf("*                                                             *\n");
+	printf("*                        Menu Principal                       *\n");
+	printf("*                                                             *\n");
+	printf("*                                                             *\n");
+	printf("***************************************************************\n");
+  printf("************ 1 - Pour consulter votre messagerie   ************\n");
+  printf("************ 2 - Pour lire un mail                 ************\n");
+	printf("************ 3 - Pour supprimer un mail            ************\n");
+	printf("************ 4 - Pour envoyer un mail              ************\n");
+	printf("************ 5 - Pour obtenir le nombre de message ************\n");
+	printf("************ 6 - Pour déconnecter                  ************\n");
+	printf("***************************************************************\n");
+	printf("*** Copyright FRSSSD ************************** Version 1.0 ***\n");
 	printf("\n");
 }
 
-/*_______________________________Récupération du choix de l'utilisateur___________________________________*/
+/*___________________________Récupération du choix de l'utilisateur____________________________*/
 int Choix(){
 	int choix;
 	scanf("%d", &choix);
 	return choix;
 }
 
-/*____________________________________Fonction nombres de messages________________________________________*/
-int Inbox(){
+/*________________________________Consultation des messages____________________________________*/
+
+/*__________________________________Lecture d'un messages______________________________________*/
+int Read(){
 	/*Déclaration des variables*/
 	char *message = NULL;	/*Permet de stocker le message reçu du serveur*/
-	int num; /*Permet de stocker le nombre de message*/
+	char num_message[3]; /*Permet de stocker le numéro du message dans un tableaude 3 caractère*/
+	char requete[5000];	/*Permet de stocker la requête complete concatené dans un tableau de 5000 caractères'*/
+	int rep;	/*Permet de stocker le type de réponse du serveur*/
 
-	/*Envoie de la requête "Inbox$*" pour demander le nombre de message sur le serveur*/
+	/*En-tête menu Suppression message*/
+	printf("***************************** MENU ****************************\n");
+	printf("*                                                             *\n");
+	printf("*                        TMP Messagerie                       *\n");
+	printf("*                                                             *\n");
+	printf("*                        Lecture Message                      *\n");
+	printf("*                                                             *\n");
+	printf("*                                                             *\n");
+	printf("***************************************************************\n");
+	printf("*** Copyright FRSSSD ************************** Version 1.0 ***\n");
+	printf("\n");
+
+	/*Récupération du nombre de messages à effacer*/
+	printf("Quel message voulez-vous lire :\n");
+	fgets(num_message, 3, stdin);	/*On récupère la saisie du clavier qui est le nombre de message dans la variable "num_message"*/
+
+	/*Concatenation des différents éléments*/
+	sprintf(requete, "Read/%s$*\n", num_message);	/*On concatene le nombre de message avec la requête
+																									pour avoir la syntaxe "Delete/nombredemessage$*"*/
+
 	/*Test de l'émission de l'envoie de la requete*/
-	if(Emission("Inbox$*\n")!=1) {
-		printf("Erreur d'emission lors de l'envoie de Inbox.\n");	/*Affichage message d'erreur*/
+	if(Emission(requete)!=1) {
+		printf("Erreur lors de l'émission du fichier à lire.\n");
 		return 1;
 	}
 
 	/*Réception de la réponse du serveur*/
 	message = Reception();	/*On stocke la reception dans la variable message*/
-	sscanf(message,"Number/%d$*",&num);	/*On extrait le paramètre de la reponse reçu, qui correspond au nombre de messages*/
-
-	/*Test si il y a des messages présents sur le serveur*/
-	if(num != 0) {
-		printf("Vous avez %s messages.\n", num); /*Si l'utilisateur a des messages, son nombre de message est affiché*/
-		free(message);
+	sscanf(message,"Reply/%d$*",&rep);	/*On extrait le paramètre de la reponse reçu, qui correspond au nombre de messages*/
+	if(rep == 101){
+		//A FAIRE
 	} else {
-		printf("Vous n'avez pas de messages.\n");	/*Si il n'a pas de message présent sur le serveur, l'utilisateur est averti*/
-		return 1;
+		if (rep == 404){
+			printf("Erreur lors de la lecture, le message n'a pas pu etre lu.\n");
+			return 1;
+		} else {
+			printf("Erreur inconnue.\n");
+			return 1;
+		}
 	}
-	return 0;	/*La fonction retourne 0 si elle s'execute correctement*/
+	return 0;
 }
+
 
 /*__________________________________Suppression Message________________________________________*/
 int Delete(){
@@ -333,6 +377,18 @@ int Delete(){
 	char num_message[3]; /*Permet de stocker le numéro du message dans un tableaude 3 caractère*/
 	char requete[5000];	/*Permet de stocker la requête complete concatené dans un tableau de 5000 caractères'*/
 	int rep;	/*Permet de stocker le type de réponse du serveur*/
+
+	/*En-tête menu Suppression message*/
+	printf("***************************** MENU ****************************\n");
+	printf("*                                                             *\n");
+	printf("*                        TMP Messagerie                       *\n");
+	printf("*                                                             *\n");
+	printf("*                      Suppression message                    *\n");
+	printf("*                                                             *\n");
+	printf("*                                                             *\n");
+	printf("***************************************************************\n");
+	printf("*** Copyright FRSSSD ************************** Version 1.0 ***\n");
+	printf("\n");
 
 	/*Récupération du nombre de messages à effacer*/
 	printf("Quel message voulez-vous effacez :\n");
@@ -366,9 +422,79 @@ int Delete(){
 	return 0;
 }
 
-/*____________________________________Déconnexion________________________________________*/
+/*__________________________________Envoie d'un message______________________________________*/
+
+
+/*______________________________Fonction nombres de messages_________________________________*/
+int Inbox(){
+	/*Déclaration des variables*/
+	char *message = NULL;	/*Permet de stocker le message reçu du serveur*/
+	int num; /*Permet de stocker le nombre de message*/
+
+	/*En-tête menu nombre de message*/
+	printf("***************************** MENU ****************************\n");
+	printf("*                                                             *\n");
+	printf("*                        TMP Messagerie                       *\n");
+	printf("*                                                             *\n");
+	printf("*                      Nombres de messages                    *\n");
+	printf("*                                                             *\n");
+	printf("*                                                             *\n");
+	printf("***************************************************************\n");
+	printf("*** Copyright FRSSSD ************************** Version 1.0 ***\n");
+	printf("\n");
+
+	/*Envoie de la requête "Inbox$*" pour demander le nombre de message sur le serveur*/
+	/*Test de l'émission de l'envoie de la requete*/
+	if(Emission("Inbox$*\n")!=1) {
+		printf("Erreur d'emission lors de l'envoie de Inbox.\n");	/*Affichage message d'erreur*/
+		return 1;
+	}
+
+	/*Réception de la réponse du serveur*/
+	message = Reception();	/*On stocke la reception dans la variable message*/
+	sscanf(message,"Number/%d$*",&num);	/*On extrait le paramètre de la reponse reçu, qui correspond au nombre de messages*/
+
+	/*Test si il y a des messages présents sur le serveur*/
+	if(num != 0) {
+		printf("Vous avez %s messages.\n", num); /*Si l'utilisateur a des messages, son nombre de message est affiché*/
+		free(message);
+	} else {
+		printf("Vous n'avez pas de messages.\n");	/*Si il n'a pas de message présent sur le serveur, l'utilisateur est averti*/
+		return 1;
+	}
+	return 0;	/*La fonction retourne 0 si elle s'execute correctement*/
+}
+
+
+/*____________________________________Déconnexion____________________________________________*/
 int Deconnexion(){
-	Terminaison();
-	printf("Vous êtes maintenant déconnecté\n");
+	int choix = 0;
+	do {
+		/*En-tête menu déconnexion*/
+		printf("***************************** MENU ****************************\n");
+		printf("*                                                             *\n");
+	  printf("*                        TMP Messagerie                       *\n");
+		printf("*                                                             *\n");
+		printf("*                          Déconnexion                        *\n");
+		printf("*                                                             *\n");
+		printf("*                                                             *\n");
+		printf("***************************************************************\n");
+		printf("*************** 1 - Pour confirmer votre déconnexion **********\n");
+		printf("*************** 2 - Pour revenir au menu précédent  ***********\n");
+		printf("***************************************************************\n");
+		printf("*** Copyright FRSSSD ************************** Version 1.0 ***\n");
+		printf("\n");
+
+		choix = Choix();
+		if (choix == 1){
+			Terminaison();
+			printf("Vous êtes maintenant déconnecté\n");
+			return 0;
+		} else if (choix == 2){
+			return 1;
+		} else {
+			printf("Veuillez renseignez un choix valide.\n");
+		}
+	} while(choix != 1 && choix != 2);
 	return 0;
 }

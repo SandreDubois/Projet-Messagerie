@@ -41,45 +41,84 @@ int main() {
 
 	system("clear");
 	int choix = 0;
-	int retourConnexion = 1;
+	int retourAuthentification = 1;
+	int retourDeconnexion = 1;
 
- 	/*Affichage du menu de connexion*/
+ 	/*Boucle pour l'authentification du client*/
 	do {
 		system("clear");
-		Menu_Connexion();
+		/*Affichage du menu de connexion*/
+		Menu_Authentification();
 		choix = Choix();
 		system("clear");
 		switch (choix) {
 			case 1:
 				/*Connexion au serveur*/
-				retourConnexion = Connexion();
+				retourAuthentification = Authentification();
 				break;
 
 			case 2:
 				/*Deconnexion*/
-				Deconnexion();
+				retourDeconnexion = Deconnexion();
+				if (retourDeconnexion == 0){
+					return 0;
+				}
 				break;
+
+			default :
+				printf("Veuillez renseignez un choix valide.\n");
 		}
 		printf("Redirection dans 5 secondes. Veuillez patientez.\n");
 		system("sleep 5");
-	} while(choix != 2 && retourConnexion != 0);
+	} while(retourDeconnexion != 0 && retourAuthentification != 0);
 
-	Menu_Principal();
+	/*Boucle principale pour l'éxecution de toutes les fonctions*/
+	if (retourAuthentification != 1){
+		do {
+			system("clear");
+			Menu_Principal();
+			choix = Choix();
+			system("clear");
+			switch (choix) {
+				case 1:
+					/*Appel de la fonction Affichage de la liste des messages*/
+					//Consult();
+					break;
 
+				case 2:
+					/*Appel de la fonction Lecture d'un mail*/
+					//Read();
+					break;
 
+				case 3:
+					/*Appel de la fonction Suppression d'un message*/
+					Delete();
+					break;
 
-	/*Demande du nombre de messages*/
-	if (Inbox()){
-		return -1;
+				case 4:
+					/*Appel de la fonction Ecriture d'un message*/
+					//Send();
+					break;
+
+				case 5:
+					/*Appel de la fonction Nombre de messages*/
+					Inbox();
+					break;
+
+				case 6:
+					/*Appel de la fonction Déconnexion*/
+					retourDeconnexion = Deconnexion();
+					if (retourDeconnexion == 0){
+						return 0;
+					}
+					break;
+
+				default:
+					printf("Veuillez renseignez un choix valide.\n");
+			}
+			printf("Redirection dans 5 secondes. Veuillez patientez.\n");
+			system("sleep 5");
+		} while(choix == 6 && retourDeconnexion != 0);
 	}
-
-	/*Suppression d'un message*/
-	if (Delete()){
-		return -1;
-	}
-
-	/*Deconnexion*/
-	Deconnexion();
-
 	return 0;
 }

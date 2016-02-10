@@ -47,9 +47,9 @@ void FreeBuffer();
 
 int Choix();
 
-void Menu_Connexion();
+void Menu_Authentification();
 
-int Connexion();
+int Authentification();
 
 void Menu_Principal();
 
