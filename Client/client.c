@@ -185,6 +185,7 @@ int EmissionBinaire(char *donnees, size_t taille) {
  */
 void Terminaison() {
 	close(socketClient);
+<<<<<<< HEAD
 }
 
 /*________________________________________Notre Partie__________________________________________*/
@@ -258,6 +259,179 @@ int Delete(){
 		return 0;
 	} else {
 		if (!strcmp(message,"505")){
+=======
+
+
+}
+
+/*_____________________________________________DEBUT_______________________________________________*/
+
+/*Fonction pour vider le buffer*/
+void FreeBuffer()
+{
+    int c = 0;
+    while (c != '\n' && c != EOF)
+    {
+        c = getchar();
+    }
+}
+
+/*____________________________________Connexion au serveur________________________________________*/
+int Connexion(){
+	/*Déclaration des variables*/
+	char *message = NULL; /*Permet de stocker le message reçu du serveur*/
+	int rep;	/*Permet de stocker le type de réponse du serveur*/
+	char adresse_client[30];	/*Permet de stocker l'adresse mail du client dans un tableau de 30 caractères'*/
+	char mdp_client[20];	/*Permet de stocker le mot de passe du client dans un tableau de 20 caractères'*/
+	char requete[5000];	/*Permet de stocker la requête complete concatené dans un tableau de 5000 caractères'*/
+
+
+	/*Récupération de l'adresse mail*/
+	printf("Veuillez saisir votre adresse mail :\n");
+	FreeBuffer(); /*On vide le buffer, pour eviter toutes erreurs ultérieure*/
+	fgets(adresse_client, 30, stdin);	/*On récupère la saisie du clavier qui est l'adresse mail dans la variable "adresse_client"*/
+	adresse_client[strlen(adresse_client)-1] = '\0';	/*On retire le "\n" à la requête  car fgets met automatiquement un "\n" à la fin*/
+
+	/*Récupération du mot de passe*/
+	printf("Veuillez saisir votre mot de passe :\n");
+	fgets(mdp_client, 20, stdin);	/*On récupère la saisie du clavier qui est le mot de passe dans la variable "mdp_client"*/
+	mdp_client[strlen(mdp_client)-1] = '\0'; /*Suppression du "\n" à la fin*/
+
+	/*Concatenation des différents éléments*/
+	sprintf(requete, "Authentification/%s/%s$*\n", adresse_client, mdp_client);	/*On concatene les identifiants et mot de passe avec la requête
+																																								pour avoir la syntaxe "Authentification/identifiant/motdepasse$*"*/
+	printf("%s\n", requete);
+
+	/*Test de l'émission de la requete*/
+	if(Emission(requete)!=1) { /*On test si l'envoie de la requete c'est faite correctement sinon erreur lors de l'émission*/
+		printf("Erreur lors de l'émission de l'adresse mail du mot de passe.\n"); /*Affichage message d'erreur*/
+		return 1;
+	}
+
+	/*Réception de la réponse du serveur*/
+	message = Reception();	/*On stocke la reception dans la variable message*/
+	sscanf(message,"Reply/%d$*",&rep); /*On extrait le paramètre de la reponse reçu, qui correspond à l'état de l'authentification*/
+
+	/*Exploitation de la réponse du serveur*/
+	if(rep == 101){	/*Si on reçoit un "Reply/101$*", alors authentification correcte*/
+		printf("Authentification Réussie.\n");	/*Affichage message d'erreur*/
+		return 0;
+	} else {
+		if (rep == 202){	/*Si on reçoit un "Reply/202$*", alors authentification échec*/
+			printf("Erreur d'authentification, votre adresse mail et le mot de passe ne correspondent pas.\n");	/*Affichage message d'erreur*/
+			return 1;
+		} else { /*Sinon erreur inconnue*/
+			printf("Erreur inconnue.\n");	/*Affichage message d'erreur*/
+			return 1;
+		}
+	}
+	return 0;	/*La fonction retourne 0 si elle s'execute correctement*/
+}
+
+/*____________________________________Affichage menu connexion_____________________________________________*/
+void Menu_Connexion(){
+	printf("*****************************MENU*****************************\n");
+	printf("*                                                            *\n");
+	printf("*                         Messagerie                         *\n");
+	printf("*                                                            *\n");
+	printf("*                      Menu de Connexion                     *\n");
+	printf("*                                                            *\n");
+	printf("*                                                            *\n");
+	printf("**************************************************************\n");
+  printf("************** 1 - Pour vous authentifier ********************\n");
+  printf("************** 2 - Pour vous déconnecter  ********************\n");
+	printf("**************************************************************\n");
+	printf("***Projet de Frederic FERRERA, Said SARMA et Sandre DUBOIS****\n");
+	printf("\n");
+}
+
+/*____________________________________Affichage menu principal_____________________________________________*/
+void Menu_Principal(){
+	printf("*****************************MENU*****************************\n");
+	printf("*                                                            *\n");
+	printf("*                         Messagerie                         *\n");
+	printf("*                                                            *\n");
+	printf("*                       Menu Principal                       *\n");
+	printf("*                                                            *\n");
+	printf("*                                                            *\n");
+	printf("**************************************************************\n");
+  printf("*********** 1 - Pour consulter votre messagerie   ************\n");
+  printf("*********** 2 - Pour lire un mail                 ************\n");
+	printf("*********** 3 - Pour supprimer un mail            ************\n");
+	printf("*********** 4 - Pour envoyer un mail              ************\n");
+	printf("*********** 5 - Pour obtenir le nombre de message ************\n");
+	printf("*********** 6 - Pour déconnecter                  ************\n");
+	printf("**************************************************************\n");
+	printf("***Projet de Frederic FERRERA, Said SARMA et Sandre DUBOIS****\n");
+	printf("\n");
+}
+
+/*_______________________________Récupération du choix de l'utilisateur___________________________________*/
+int Choix(){
+	int choix;
+	scanf("%d", &choix);
+	return choix;
+}
+
+/*____________________________________Fonction nombres de messages________________________________________*/
+int Inbox(){
+	/*Déclaration des variables*/
+	char *message = NULL;	/*Permet de stocker le message reçu du serveur*/
+	int num; /*Permet de stocker le nombre de message*/
+
+	/*Envoie de la requête "Inbox$*" pour demander le nombre de message sur le serveur*/
+	/*Test de l'émission de l'envoie de la requete*/
+	if(Emission("Inbox$*\n")!=1) {
+		printf("Erreur d'emission lors de l'envoie de Inbox.\n");	/*Affichage message d'erreur*/
+		return 1;
+	}
+
+	/*Réception de la réponse du serveur*/
+	message = Reception();	/*On stocke la reception dans la variable message*/
+	sscanf(message,"Number/%d$*",&num);	/*On extrait le paramètre de la reponse reçu, qui correspond au nombre de messages*/
+
+	/*Test si il y a des messages présents sur le serveur*/
+	if(num != 0) {
+		printf("Vous avez %s messages.\n", num); /*Si l'utilisateur a des messages, son nombre de message est affiché*/
+		free(message);
+	} else {
+		printf("Vous n'avez pas de messages.\n");	/*Si il n'a pas de message présent sur le serveur, l'utilisateur est averti*/
+		return 1;
+	}
+	return 0;	/*La fonction retourne 0 si elle s'execute correctement*/
+}
+
+/*__________________________________Suppression Message________________________________________*/
+int Delete(){
+	/*Déclaration des variables*/
+	char *message = NULL;	/*Permet de stocker le message reçu du serveur*/
+	char num_message[3]; /*Permet de stocker le numéro du message dans un tableaude 3 caractère*/
+	char requete[5000];	/*Permet de stocker la requête complete concatené dans un tableau de 5000 caractères'*/
+	int rep;	/*Permet de stocker le type de réponse du serveur*/
+
+	/*Récupération du nombre de messages à effacer*/
+	printf("Quel message voulez-vous effacez :\n");
+	fgets(num_message, 3, stdin);	/*On récupère la saisie du clavier qui est le nombre de message dans la variable "num_message"*/
+
+	/*Concatenation des différents éléments*/
+	sprintf(requete, "Delete/%s$*\n", num_message);	/*On concatene le nombre de message avec la requête
+																									pour avoir la syntaxe "Delete/nombredemessage$*"*/
+
+	/*Test de l'émission de l'envoie de la requete*/
+	if(Emission(requete)!=1) {
+		printf("Erreur lors de l'émission du fichier à effacer.\n");
+		return 1;
+	}
+
+	/*Réception de la réponse du serveur*/
+	message = Reception();	/*On stocke la reception dans la variable message*/
+	sscanf(message,"Reply/%d$*",&rep);	/*On extrait le paramètre de la reponse reçu, qui correspond au nombre de messages*/
+	if(rep == 101){
+		printf("Votre message a bien été supprimé.\n");
+		return 0;
+	} else {
+		if (rep == 505){
+>>>>>>> fd03d90f6eac893d3acf58a099b3d609e7618746
 			printf("Erreur lors de la suppression, le message n'a pas pu etre effacé.\n");
 			return 1;
 		} else {
@@ -268,6 +442,10 @@ int Delete(){
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+/*____________________________________Déconnexion________________________________________*/
+>>>>>>> fd03d90f6eac893d3acf58a099b3d609e7618746
 int Deconnexion(){
 	Terminaison();
 	printf("Vous êtes maintenant déconnecté\n");

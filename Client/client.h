@@ -43,8 +43,21 @@ int EmissionBinaire(char *donnees, size_t taille);
  */
 void Terminaison();
 
+<<<<<<< HEAD
 int Connexion();
 
+=======
+void FreeBuffer();
+
+int Choix();
+
+void Menu_Connexion();
+
+int Connexion();
+
+void Menu_Principal();
+
+>>>>>>> fd03d90f6eac893d3acf58a099b3d609e7618746
 int Inbox();
 
 int Delete();
