@@ -185,6 +185,8 @@ int EmissionBinaire(char *donnees, size_t taille) {
  */
 void Terminaison() {
 	close(socketClient);
+
+
 }
 
 /*_____________________________________________DEBUT_______________________________________________*/
@@ -252,6 +254,8 @@ int Connexion(){
 	return 0;	/*La fonction retourne 0 si elle s'execute correctement*/
 }
 
+/*_____________________________________________Affichage menu_____________________________________________*/
+
 /*____________________________________Fonction nombres de messages________________________________________*/
 int Inbox(){
 	/*Déclaration des variables*/
@@ -305,7 +309,7 @@ int Delete(){
 	/*Réception de la réponse du serveur*/
 	message = Reception();	/*On stocke la reception dans la variable message*/
 	sscanf(message,"Reply/%d$*",&rep);	/*On extrait le paramètre de la reponse reçu, qui correspond au nombre de messages*/
-	if(rep == 101){	
+	if(rep == 101){
 		printf("Votre message a bien été supprimé.\n");
 		return 0;
 	} else {
