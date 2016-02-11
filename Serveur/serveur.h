@@ -3,32 +3,19 @@
 
 /* Initialisation.
  * Creation du serveur.
-<<<<<<< HEAD
- * renvoie 1 si ça c'est bien passé 0 sinon
-=======
  * renvoie 1 si ÔøΩa c'est bien passÔøΩ 0 sinon
->>>>>>> fd03d90f6eac893d3acf58a099b3d609e7618746
  */
 int Initialisation();
 
 /* Initialisation.
-<<<<<<< HEAD
- * Creation du serveur en précisant le service ou numéro de port.
- * renvoie 1 si ça c'est bien passé 0 sinon
-=======
  * Creation du serveur en prÔøΩcisant le service ou numÔøΩro de port.
  * renvoie 1 si ÔøΩa c'est bien passÔøΩ 0 sinon
->>>>>>> fd03d90f6eac893d3acf58a099b3d609e7618746
  */
 int InitialisationAvecService(char *service);
 
 
 /* Attends qu'un client se connecte.
-<<<<<<< HEAD
- * renvoie 1 si ça c'est bien passé 0 sinon
-=======
  * renvoie 1 si ÔøΩa c'est bien passÔøΩ 0 sinon
->>>>>>> fd03d90f6eac893d3acf58a099b3d609e7618746
  */
 int AttenteClient();
 
@@ -40,25 +27,11 @@ char *Reception();
 
 /* Envoie un message au client.
  * Attention, le message doit etre termine par \n
-<<<<<<< HEAD
- * renvoie 1 si ça c'est bien passé 0 sinon
-=======
  * renvoie 1 si ÔøΩa c'est bien passÔøΩ 0 sinon
->>>>>>> fd03d90f6eac893d3acf58a099b3d609e7618746
  */
 int Emission(char *message);
 
 /* Recoit des donnees envoyees par le client.
-<<<<<<< HEAD
- * renvoie le nombre d'octets reçus, 0 si la connexion est fermée,
- * un nombre négatif en cas d'erreur
- */
-int ReceptionBinaire(char *donnees, size_t tailleMax);
-
-/* Envoie des données au client en précisant leur taille.
- * renvoie le nombre d'octets envoyés, 0 si la connexion est fermée,
- * un nombre négatif en cas d'erreur
-=======
  * renvoie le nombre d'octets reÔøΩus, 0 si la connexion est fermÔøΩe,
  * un nombre nÔøΩgatif en cas d'erreur
  */
@@ -67,10 +40,13 @@ int ReceptionBinaire(char *donnees, size_t tailleMax);
 /* Envoie des donnÔøΩes au client en prÔøΩcisant leur taille.
  * renvoie le nombre d'octets envoyÔøΩs, 0 si la connexion est fermÔøΩe,
  * un nombre nÔøΩgatif en cas d'erreur
->>>>>>> fd03d90f6eac893d3acf58a099b3d609e7618746
  */
 int EmissionBinaire(char *donnees, size_t taille);
 
+/* Fonction permettant de prendre le message et d'ajouter la chaine
+ * caract√®res $*.
+ */
+int format_message(message);
 
 /* Ferme la connexion avec le client.
  */
@@ -80,9 +56,4 @@ void TerminaisonClient();
  */
 void Terminaison();
 
-<<<<<<< HEAD
-=======
-int Connexion();
-
->>>>>>> fd03d90f6eac893d3acf58a099b3d609e7618746
 #endif

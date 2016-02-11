@@ -3,10 +3,7 @@
 #include "serveur.h"
 
 int main() {
-  	//Variables
-	char *message = NULL;
-	char reponse[20];
-
+		char *message = calloc(50,sizeof(char));		//Initialise le message à 0
 	Initialisation();
 
 	while(1) {
@@ -15,16 +12,25 @@ int main() {
 		AttenteClient();
 
 		while(!fini) {
-			message = Reception();
-
+			message = ReceptionBinaire(message,50);
 			if(message != NULL) {
+				int resultat = Analyser(message);
+
+				switch (resultat){
+					case -1:
+						printf("La syntaxe est incorrecte : il manque une '*' après le '$'\n");
+						break;//à finir
+
+					case -2: printf("%s\n", );
+
+					default:
+				}
 				printf("J'ai recu: %s\n", message);
 				free(message);
-
-				if(Emission("Test de message serveur.\n")!=1) {
-					printf("Erreur d'emission\n");
-				}
 			} else {
+				printf("Erreur de r�ception\n");
+				return 1;
+			}
 				fini = 1;
 			}
 		}

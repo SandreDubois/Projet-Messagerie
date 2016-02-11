@@ -142,6 +142,7 @@ int AttenteClient() {
 	return 1;
 }
 
+
 /* Recoit un message envoye par le serveur.
  */
 char *Reception() {
@@ -253,10 +254,6 @@ int EmissionBinaire(char *donnees, size_t taille) {
 	}
 }
 
-<<<<<<< HEAD
-=======
-
-
 /* Ferme la connexion avec le client.
  */
 void TerminaisonClient() {
@@ -269,71 +266,115 @@ void Terminaison() {
 	close(socketEcoute);
 }
 
-/*_____________________________________________DEBUT_______________________________________________*/
+/*---------------------------------Our code-----------------------------------*/
 
->>>>>>> fd03d90f6eac893d3acf58a099b3d609e7618746
-int Connexion(){
+//Permet de vérifier si un élément est alloué ou non en mémoire
+int Vide(void *connerie){
+	return (connerie == NULL);
+}
+
+/*------------------------Etude du format du message--------------------------*/
+
+int Analyser(char *requete_recue){
+	int taille;
+	int i=0;	//mise à 0 de la variable compteur
+
+	if (Vide(requete_recue))		//Si la requete_recue est incorrecte
+		return -1;
+
+	taille = strlen(requete_recue);
+//Recherche du '$' tout en ne dépassant pas la taille Max de la requete_recue
+	while((requete_recue[i] !='$') && (i<taille))
+		i++;
+
+	if(i>=taille)
+		return -2;		//erreur message trop grand
+
+	if(requete_recue[i+1]=='*')
+		return 0;
+	else
+		return -1;
+}
+
+/*---------------Formatage du message avant envoi au client-------------------*/
+
+int format_message(message){
+/* Ajoute 2 places pour accueillir '$*' */
+	char *temp = calloc(strlen(message)+2, sizeof(char));
+
+	if ((Vide(message)) || (Vide(temp)))
+		return -1;
+//Ajoute la chaine de caractère $*
+	strcat(temp,"$*");
+
+	if(EmissionBinaire(temp, strlen(temp)) == -1)
+		return -2;
+
+	free(temp);
+	return 0;
+}
+
+/*-----------------------Extraction des paramètres----------------------------*/
+
+
+//Fonction d'extraction des sous chaines (utilisée pour extraire les paramètres)
+// exemple : a = extraction(30,p,login,'/');
+int Extraction(int lg_chaine, char *source, char *destination, char condition){
+
+	int i =0;
+
+	if (!lg_chaine) 		//à commenter
+	return -1;
+
+	if ((Vide(source)) || (Vide(destination)) || (Vide(&condition)))
+		return -2;
+//J'extrais le paramètre courant tant que je n'ai pas de caractère condition et
+//et que la chaine respecte la taille imposée
+	while((*source != condition) && (i<lg_chaine)){
+		destination[i] = *source;
+		i++;
+		source++;
+	}
+	destination[i] = '\0';
+	source++;		//on se place après le '/' à la fin de l'extraction
+	return 0;
+}
+
+
+/*-----------------------------Authentification-------------------------------*/
+
+
+int Authentification(){
 	char *p;
 	char login[30];
 	char paswd[30];
-	int i=0;
-<<<<<<< HEAD
-	char *athentification = NULL;
-	athentification = Reception();
-	p = strchr(athentification,'/');
-=======
-	char *authentification = NULL;
-	authentification = Reception();
-	p = strchr(authentification,'/');
->>>>>>> fd03d90f6eac893d3acf58a099b3d609e7618746
-	p++;
-	while(*p !='/'){
-		login[i]=*p;
-		i++;
-		p++;
-	}
-	login[i]='\0';
-	i=0;
-	p++;
-	while(*p !='/'){
-<<<<<<< HEAD
-		pswd[i]=*p;
-		i++;
-		p++;
-	}
-pswd[i]='\0';
-=======
-		paswd[i]=*p;
-		i++;
-		p++;
-	}
-	paswd[i]='\0';
->>>>>>> fd03d90f6eac893d3acf58a099b3d609e7618746
-	//
-	//fichier = fopen("/Serveur/identifiants.txt", "r");
-	//while(fichier!= EOF)   //rechercher dans le fichier
-	//{
-	//	if (fichier !=)
+	int resultat;
 
-	//	fclose(fichier); // On ferme le fichier qui a été ouvert
-	//}
+	char *message = NULL;
+	message = Reception();
+	p = strchr(message,'/');	//lecture de la sous chaine jusqu'au premier
+	if (Vide(p))
+		return -1;
+	p++;		//debut du 1er paramètre
 
-	    return 0;
-<<<<<<< HEAD
-		}
+	resultat = extraction(30, p, login, '/');
+	if (resultat ==0){
+		resultat = extraction(30, p, paswd, '/');
+
+		if (resultat <0)
+			return -2; //l'extraction a échoué pour le pswd
+	}
+	else
+		return -3;	//l'extraction a échoué pour le login
+
+	return 0;
 }
 
 
-/* Ferme la connexion avec le client.
- */
-void TerminaisonClient() {
-	close(socketService);
-}
+/*fichier = fopen("/Serveur/identifiants.txt", "r");
+while(fichier!= EOF)   //rechercher dans le fichier
+{
+if (fichier !=)
 
-/* Arrete le serveur.
- */
-void Terminaison() {
-	close(socketEcoute);
-=======
->>>>>>> fd03d90f6eac893d3acf58a099b3d609e7618746
-}
+fclose(fichier); // On ferme le fichier qui a été ouvert
+*/
