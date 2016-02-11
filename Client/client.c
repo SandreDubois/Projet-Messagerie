@@ -296,12 +296,11 @@ void Menu_Principal(){
 	printf("*                                                             *\n");
 	printf("*                                                             *\n");
 	printf("***************************************************************\n");
-  printf("************ 1 - Pour consulter votre messagerie   ************\n");
-  printf("************ 2 - Pour lire un mail                 ************\n");
-	printf("************ 3 - Pour supprimer un mail            ************\n");
-	printf("************ 4 - Pour envoyer un mail              ************\n");
-	printf("************ 5 - Pour obtenir le nombre de message ************\n");
-	printf("************ 6 - Pour déconnecter                  ************\n");
+  printf("************ 1 - Pour lire un mail                 ************\n");
+	printf("************ 2 - Pour supprimer un mail            ************\n");
+	printf("************ 3 - Pour envoyer un mail              ************\n");
+	printf("************ 4 - Pour obtenir le nombre de message ************\n");
+	printf("************ 5 - Pour déconnecter                  ************\n");
 	printf("***************************************************************\n");
 	printf("*** Copyright FRSSSD ************************** Version 1.0 ***\n");
 	printf("\n");
