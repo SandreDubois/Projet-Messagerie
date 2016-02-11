@@ -23,7 +23,7 @@
 #define TRUE 1
 #define FALSE 0
 #define LONGUEUR_TAMPON 4096
-
+// test
 
 #ifdef WIN32
 #define perror(x) printf("%s : code d'erreur : %d\n", (x), WSAGetLastError())
