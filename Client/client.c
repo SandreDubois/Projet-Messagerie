@@ -199,6 +199,17 @@ void FreeBuffer()
     }
 }
 
+/*Fonction pour revenir au menu principal avec "Entrée" et rester dans la fonction en attendant*/
+int RetourMenuPrincipal(){
+	char c;
+	FreeBuffer();
+	scanf("%c", &c);
+	if (c == '\n'){
+		return 0;
+	}
+	return 1;
+}
+
 /*______________________________Affichage menu connexion_______________________________________*/
 void Menu_Authentification(){
 	printf("***************************** MENU ****************************\n");
@@ -216,7 +227,7 @@ void Menu_Authentification(){
 	printf("* Projet de Frederic FERRERA, Saidaran SARMA et Sandre DUBOIS *\n");
 	printf("*                                                             *\n");
 	printf("***************************************************************\n");
-	printf("*** Copyright FRSSSD ************************** Version 1.0 ***\n");
+	printf("*** Copyright FFSSSD ************************** Version 1.0 ***\n");
 	printf("\n");
 }
 
@@ -238,7 +249,7 @@ int Authentification(){
 	printf("*                                                             *\n");
 	printf("*                                                             *\n");
 	printf("***************************************************************\n");
-	printf("*** Copyright FRSSSD ************************** Version 1.0 ***\n");
+	printf("*** Copyright FFSSSD ************************** Version 1.0 ***\n");
 	printf("\n");
 
 	/*Récupération de l'adresse mail*/
@@ -260,7 +271,7 @@ int Authentification(){
 	/*printf("%s\n", requete);	/*Retour de la requête complete pour test*/
 
 	/*Test de l'émission de la requete*/
-	if(Emission(requete)!=1) { /*On test si l'envoie de la requete c'est faite correctement sinon erreur lors de l'émission*/
+	if(Emission(requete)!=1) { /*On test si l'envoie de la requete s'est faite correctement sinon erreur lors de l'émission*/
 		printf("Erreur lors de l'émission de l'adresse mail du mot de passe.\n"); /*Affichage message d'erreur*/
 		return 1;
 	}
@@ -300,9 +311,9 @@ void Menu_Principal(){
 	printf("************ 2 - Pour supprimer un mail            ************\n");
 	printf("************ 3 - Pour envoyer un mail              ************\n");
 	printf("************ 4 - Pour obtenir le nombre de message ************\n");
-	printf("************ 5 - Pour déconnecter                  ************\n");
+	printf("************ 5 - Pour vous déconnecter             ************\n");
 	printf("***************************************************************\n");
-	printf("*** Copyright FRSSSD ************************** Version 1.0 ***\n");
+	printf("*** Copyright FFSSSD ************************** Version 1.0 ***\n");
 	printf("\n");
 }
 
@@ -319,6 +330,10 @@ int Choix(){
 int Read(){
 	/*Déclaration des variables*/
 	char *message = NULL;	/*Permet de stocker le message reçu du serveur*/
+	char *mail_numero = NULL; /*Permet de stocker le numéro du mail envoyé par le serveur*/
+	char *mail_expediteur = NULL; /*Permet de stocker l'expéditeur du mail envoyé par le serveur*/
+	char *mail_objet = NULL; /*Permet de stocker l'objet du  mail envoyé par le serveur*/
+	char *mail_contenu = NULL; /*Permet de stocker le contenu mail envoyé par le serveur*/
 	char num_message[3]; /*Permet de stocker le numéro du message dans un tableaude 3 caractère*/
 	char requete[5000];	/*Permet de stocker la requête complete concatené dans un tableau de 5000 caractères'*/
 	int rep;	/*Permet de stocker le type de réponse du serveur*/
@@ -332,7 +347,7 @@ int Read(){
 	printf("*                                                             *\n");
 	printf("*                                                             *\n");
 	printf("***************************************************************\n");
-	printf("*** Copyright FRSSSD ************************** Version 1.0 ***\n");
+	printf("*** Copyright FFSSSD ************************** Version 1.0 ***\n");
 	printf("\n");
 
 	/*Récupération du nombre de messages à effacer*/
@@ -345,6 +360,7 @@ int Read(){
 	sprintf(requete, "Read/%s$*\n", num_message);	/*On concatene le nombre de message avec la requête
 																									pour avoir la syntaxe "Delete/nombredemessage$*"*/
 
+
 	/*Test de l'émission de l'envoie de la requete*/
 	if(Emission(requete)!=1) {
 		printf("Erreur lors de l'émission du fichier à lire.\n");
@@ -356,6 +372,23 @@ int Read(){
 	sscanf(message,"Reply/%d$*",&rep);	/*On extrait le paramètre de la reponse reçu, qui correspond au nombre de messages*/
 	if(rep == 101){
 		//A FAIRE
+		message = Reception();
+		sscanf(message,"Mail/%s$*",&mail_numero);	/*On extrait le paramètre de la reponse reçu, qui correspond au numéro du mail*/
+		message = Reception();
+		sscanf(message,"Mail/%s$*",&mail_expediteur);	/*On extrait le paramètre de la reponse reçu, qui correspond à l"expéditeur du mail*/
+		message = Reception();
+		sscanf(message,"Mail/%s$*",&mail_objet);	/*On extrait le paramètre de la reponse reçu, qui correspond à l'objet du mail*/
+		message = Reception();
+		sscanf(message,"Mail/%s$*",&mail_contenu);	/*On extrait le paramètre de la reponse reçu, qui correspond au contenu du mail*/
+		printf("\n");
+		printf("Mail numéro : %s\n", mail_numero);
+		printf("Expéditeur : %s\n", mail_expediteur);
+		printf("Objet : %s\n", mail_objet);
+		printf("Contenu : %s\n");
+		printf("%s\n", mail_contenu);
+		printf("\n");
+		printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
+		return 0;
 	} else {
 		if (rep == 404){
 			printf("Erreur lors de la lecture, le message n'a pas pu etre lu.\n");
@@ -386,7 +419,7 @@ int Delete(){
 	printf("*                                                             *\n");
 	printf("*                                                             *\n");
 	printf("***************************************************************\n");
-	printf("*** Copyright FRSSSD ************************** Version 1.0 ***\n");
+	printf("*** Copyright FFSSSD ************************** Version 1.0 ***\n");
 	printf("\n");
 
 	/*Récupération du nombre de messages à effacer*/
@@ -425,6 +458,24 @@ int Delete(){
 
 /*__________________________________Envoie d'un message______________________________________*/
 
+int Send(){
+	/*Déclaration des variables*/
+	char *message = NULL;	/*Permet de stocker le message reçu du serveur*/
+
+	/*En-tête menu nombre de message*/
+	printf("***************************** MENU ****************************\n");
+	printf("*                                                             *\n");
+	printf("*                        TMP Messagerie                       *\n");
+	printf("*                                                             *\n");
+	printf("*                      Envoie d'un message                    *\n");
+	printf("*                                                             *\n");
+	printf("*                                                             *\n");
+	printf("***************************************************************\n");
+	printf("*** Copyright FFSSSD ************************** Version 1.0 ***\n");
+	printf("\n");
+	printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
+	return 0;
+}
 
 /*______________________________Fonction nombres de messages_________________________________*/
 int Inbox(){
@@ -441,7 +492,7 @@ int Inbox(){
 	printf("*                                                             *\n");
 	printf("*                                                             *\n");
 	printf("***************************************************************\n");
-	printf("*** Copyright FRSSSD ************************** Version 1.0 ***\n");
+	printf("*** Copyright FFSSSD ************************** Version 1.0 ***\n");
 	printf("\n");
 
 	/*Envoie de la requête "Inbox$*" pour demander le nombre de message sur le serveur*/
@@ -459,8 +510,12 @@ int Inbox(){
 	if(num != 0) {
 		printf("Vous avez %s messages.\n", num); /*Si l'utilisateur a des messages, son nombre de message est affiché*/
 		free(message);
+		printf("\n");
+		printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 	} else {
 		printf("Vous n'avez pas de messages.\n");	/*Si il n'a pas de message présent sur le serveur, l'utilisateur est averti*/
+		printf("\n");
+		printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 		return 1;
 	}
 	return 0;	/*La fonction retourne 0 si elle s'execute correctement*/
@@ -482,7 +537,7 @@ int Deconnexion(){
 		printf("*************** 1 - Pour confirmer votre déconnexion **********\n");
 		printf("*************** 2 - Pour revenir au menu précédent  ***********\n");
 		printf("***************************************************************\n");
-		printf("*** Copyright FRSSSD ************************** Version 1.0 ***\n");
+		printf("*** Copyright FFSSSD ************************** Version 1.0 ***\n");
 		printf("\n");
 
 		choix = Choix();

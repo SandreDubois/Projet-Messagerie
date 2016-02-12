@@ -45,6 +45,8 @@ void Terminaison();
 
 void FreeBuffer();
 
+int RetourMenuPrincipal();
+
 int Choix();
 
 void Menu_Authentification();
@@ -53,9 +55,13 @@ int Authentification();
 
 void Menu_Principal();
 
-int Inbox();
+int Read();
 
 int Delete();
+
+int Send();
+
+int Inbox();
 
 int Deconnexion();
 

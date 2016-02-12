@@ -46,7 +46,7 @@ int main() {
 				printf("Veuillez renseignez un choix valide.\n");
 		}
 		printf("Redirection dans 5 secondes. Veuillez patientez.\n");
-		system("sleep 5");
+		//system("sleep 5");
 	} while(retourDeconnexion != 0 && retourAuthentification != 0);
 
 	/*Boucle principale pour l'éxecution de toutes les fonctions*/
@@ -60,7 +60,9 @@ int main() {
 				case 1:
 					/*Appel de la fonction Lecture d'un mail*/
 					retourRead = Read();
-					break;
+					if (RetourMenuPrincipal() == 0){
+						break;
+					}
 
 				case 2:
 					/*Appel de la fonction Suppression d'un message*/
@@ -69,13 +71,17 @@ int main() {
 
 				case 3:
 					/*Appel de la fonction Ecriture d'un message*/
-					//retourSend = Send();
-					break;
+					retourSend = Send();
+					if (RetourMenuPrincipal() == 0){
+						break;
+					}
 
 				case 4:
 					/*Appel de la fonction Nombre de messages*/
 					retourInbox = Inbox();
-					break;
+					if (RetourMenuPrincipal() == 0){
+						break;
+					}
 
 				case 5:
 					/*Appel de la fonction Déconnexion*/
@@ -89,8 +95,8 @@ int main() {
 					printf("Veuillez renseignez un choix valide.\n");
 			}
 			printf("Redirection dans 5 secondes. Veuillez patientez.\n");
-			system("sleep 5");
-		} while(retourDelete !=0 && retourInbox != 0 && retourDeconnexion != 0 /*&& retourSend != 0 && retourRead != 0*/);
+			//system("sleep 5");
+		} while(retourDeconnexion != 0);
 	}
 	return 0;
 }
