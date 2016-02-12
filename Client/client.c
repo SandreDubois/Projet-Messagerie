@@ -129,7 +129,7 @@ int Emission(char *message) {
         perror("Emission, probleme lors du send.");
         return 0;
 	}
-	printf("Emission de %d caracteres.\n", taille+1);
+	//printf("Emission de %d caracteres.\n", taille+1);
 	return 1;
 }
 
@@ -461,6 +461,13 @@ int Delete(){
 int Send(){
 	/*Déclaration des variables*/
 	char *message = NULL;	/*Permet de stocker le message reçu du serveur*/
+	char mail_destinataire[30]; /*Permet récupérer le destinataire du mail pour l'envoyer au serveur*/
+	char mail_objet[100];
+	char *mail_contenu = calloc(5000, sizeof (char)); /*Permet récupérer le contenu du mail pour l'envoyer au serveur*/
+	char requete[5000];	/*Permet de stocker la requête complete concatené dans un tableau de 5000 caractères'*/
+	int rep;	/*Permet de stocker le type de réponse du serveur*/
+	int i = 0;
+
 
 	/*En-tête menu nombre de message*/
 	printf("***************************** MENU ****************************\n");
@@ -472,6 +479,83 @@ int Send(){
 	printf("*                                                             *\n");
 	printf("***************************************************************\n");
 	printf("*** Copyright FFSSSD ************************** Version 1.0 ***\n");
+	printf("\n");
+
+	/*Récupération du destinataire du message à envoyer*/
+	printf("Veuillez rentrer l'adresse de votre destinataire :\n");
+	FreeBuffer();
+	fgets(mail_destinataire, 30, stdin);	/*On récupère la saisie du clavier qui est le nombre de message dans la variable "num_message"*/
+	mail_destinataire[strlen(mail_destinataire)-1] = '\0'; /*Suppression du "\n" à la fin*/
+
+	/*Concatenation des différents éléments*/
+	sprintf(requete, "Mail/%s$*\n", mail_destinataire);	/*On concatene le nombre de message avec la requête
+																									pour avoir la syntaxe "Mail/identifiant$*"*/
+
+	/*Test de l'émission de l'envoie de la requete*/
+	if(Emission(requete)!=1) {
+		printf("Erreur lors de l'émission du destinataire.\n");
+		return 1;
+	}
+
+	printf("\n");	/*Retour à la ligne pour un affichage plus clair*/
+
+	/*Récupération de l'objet du message à envoyer*/
+	printf("Veuillez rentrer l'objet de votre mail :\n");
+	//FreeBuffer();
+	fgets(mail_objet, 100, stdin);	/*On récupère la saisie du clavier qui est le nombre de message dans la variable "num_message"*/
+	mail_objet[strlen(mail_objet)-1] = '\0'; /*Suppression du "\n" à la fin*/
+
+	/*Concatenation des différents éléments*/
+	sprintf(requete, "Mail/%s$*\n", mail_objet);	/*On concatene le nombre de message avec la requête
+																									pour avoir la syntaxe "Mail/objet$*"*/
+
+	/*Test de l'émission de l'envoie de la requete*/
+	if(Emission(requete)!=1) {
+		printf("Erreur lors de l'émission du destinataire.\n");
+		return 1;
+	}
+
+	printf("\n");	/*Retour à la ligne pour un affichage plus clair*/
+
+	/*Récupération du contenu du message à envoyer*/
+	printf("Contenu de votre mail (Pressez la touche \"ECHAP\" pour terminer) :\n");
+	//FreeBuffer();
+	do{
+		mail_contenu[i] = fgetc(stdin);
+		if (mail_contenu[i] == 27)
+			break;
+		i++;
+	} while (1);
+
+	//fgets(mail_contenu, 5000, stdin);	/*On récupère la saisie du clavier qui est le nombre de message dans la variable "num_message"*/
+	//mail_contenu[strlen(mail_contenu)-1] = '\0'; /*Suppression du "\n" à la fin*/
+
+	/*Concatenation des différents éléments*/
+	sprintf(requete, "Mail/%s$*\n", mail_contenu);	/*On concatene le nombre de message avec la requête
+																									pour avoir la syntaxe "Mail/contenu$*"*/
+
+	/*Test de l'émission de l'envoie de la requete*/
+	if(Emission(requete)!=1) {
+		printf("Erreur lors de l'émission du destinataire.\n");
+		return 1;
+	}
+
+	/*Réception de la réponse du serveur*/
+	message = Reception();	/*On stocke la reception dans la variable message*/
+	sscanf(message,"Reply/%d$*",&rep);	/*On extrait le paramètre de la reponse reçu, qui correspond au nombre de messages*/
+	if(rep == 101){
+		printf("Votre message a été envoyé.\n");
+		return 0;
+	} else {
+		if (rep == 303){
+			printf("Utilisateur incorrecte, veuillez renseignez un destinataire existant.\n");
+			return 2;
+		} else {
+			printf("Erreur inconnue.\n");
+			return 1;
+		}
+	}
+
 	printf("\n");
 	printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 	return 0;
