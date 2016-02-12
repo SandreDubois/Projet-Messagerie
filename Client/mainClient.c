@@ -59,7 +59,7 @@ int main() {
 			switch (choix) {
 				case 1:
 					/*Appel de la fonction Lecture d'un mail*/
-					//retourRead = Read();
+					retourRead = Read();
 					break;
 
 				case 2:

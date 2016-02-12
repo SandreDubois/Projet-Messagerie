@@ -337,7 +337,9 @@ int Read(){
 
 	/*Récupération du nombre de messages à effacer*/
 	printf("Quel message voulez-vous lire :\n");
+	FreeBuffer();
 	fgets(num_message, 3, stdin);	/*On récupère la saisie du clavier qui est le nombre de message dans la variable "num_message"*/
+	num_message[strlen(num_message)-1] = '\0'; /*Suppression du "\n" à la fin*/
 
 	/*Concatenation des différents éléments*/
 	sprintf(requete, "Read/%s$*\n", num_message);	/*On concatene le nombre de message avec la requête
@@ -389,7 +391,9 @@ int Delete(){
 
 	/*Récupération du nombre de messages à effacer*/
 	printf("Quel message voulez-vous effacez :\n");
+	FreeBuffer();
 	fgets(num_message, 3, stdin);	/*On récupère la saisie du clavier qui est le nombre de message dans la variable "num_message"*/
+	num_message[strlen(num_message)-1] = '\0'; /*Suppression du "\n" à la fin*/
 
 	/*Concatenation des différents éléments*/
 	sprintf(requete, "Delete/%s$*\n", num_message);	/*On concatene le nombre de message avec la requête
