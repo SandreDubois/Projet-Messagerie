@@ -47,6 +47,8 @@ void FreeBuffer();
 
 int RetourMenuPrincipal();
 
+int RetourMenuPrincipal_2();
+
 int Choix();
 
 void Menu_Authentification();

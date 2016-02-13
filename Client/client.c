@@ -202,6 +202,16 @@ void FreeBuffer()
 /*Fonction pour revenir au menu principal avec "Entrée" et rester dans la fonction en attendant*/
 int RetourMenuPrincipal(){
 	char c;
+	//FreeBuffer();
+	scanf("%c", &c);
+	if (c == '\n'){
+		return 0;
+	}
+	return 1;
+}
+
+int RetourMenuPrincipal_2(){
+	char c;
 	FreeBuffer();
 	scanf("%c", &c);
 	if (c == '\n'){
@@ -254,7 +264,7 @@ int Authentification(){
 
 	/*Récupération de l'adresse mail*/
 	printf("Veuillez saisir votre adresse mail :\n");
-	FreeBuffer(); /*On vide le buffer, pour eviter toutes erreurs ultérieure*/
+	FreeBuffer(); /*On vide le buffer, pour eviter toutes erreurs ultérieures*/
 	fgets(adresse_client, 30, stdin);	/*On récupère la saisie du clavier qui est l'adresse mail
 	 																	dans la variable "adresse_client"*/
 	adresse_client[strlen(adresse_client)-1] = '\0';	/*On retire le "\n" à la requête car fgets met
@@ -264,6 +274,7 @@ int Authentification(){
 
 	/*Récupération du mot de passe*/
 	printf("Veuillez saisir votre mot de passe :\n");
+	//FreeBuffer(); /*On vide le buffer, pour eviter toutes erreurs ultérieures*/
 	fgets(mdp_client, 20, stdin);	/*On récupère la saisie du clavier qui est le mot de passe
 	 															dans la variable "mdp_client"*/
 	mdp_client[strlen(mdp_client)-1] = '\0'; /*Suppression du "\n" à la fin*/
@@ -326,7 +337,7 @@ void Menu_Principal(){
 int Choix(){
 	int choix;
 	scanf("%d", &choix);
-	return choix;
+	return choix;	/*La fonction retourne "choix" si elle s'execute correctement*/
 }
 
 /*________________________________Consultation des messages____________________________________*/
@@ -374,7 +385,8 @@ int Read(){
 
 	/*Réception de la réponse du serveur*/
 	message = Reception();	/*On stocke la reception dans la variable message*/
-	sscanf(message,"Reply/%d$*",&rep);	/*On extrait le paramètre de la reponse reçu, qui correspond au nombre de messages*/
+	sscanf(message,"Reply/%d$*",&rep);	/*On extrait le paramètre de la reponse reçu,
+																			qui correspond à l'état de la lecture du mail*/
 	if(rep == 101){
 		/*Reception des différents élements du mail*/
 		message = Reception();
@@ -388,6 +400,7 @@ int Read(){
 		printf("\n");
 
 		/*Affichage des différents éléments du mail*/
+		printf("\n");
 		printf("Mail numéro : %s\n", mail_numero);
 		printf("Expéditeur : %s\n", mail_expediteur);
 		printf("Objet : %s\n", mail_objet);
@@ -399,14 +412,20 @@ int Read(){
 	} else {
 		/*Gestion d'erreur si c'est pas "Reply/101$*"*/
 		if (rep == 404){
+			printf("\n");
 			printf("Erreur lors de la lecture, le message n'a pas pu etre lu.\n");
+			printf("\n");
+			printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 			return 1;
 		} else {
+			printf("\n");
 			printf("Erreur inconnue.\n");
+			printf("\n");
+			printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 			return 1;
 		}
 	}
-	return 0;
+	return 0;	/*La fonction retourne 0 si elle s'execute correctement*/
 }
 
 
@@ -450,20 +469,29 @@ int Delete(){
 	/*Réception de la réponse du serveur*/
 	message = Reception();	/*On stocke la reception dans la variable message*/
 	sscanf(message,"Reply/%d$*",&rep);	/*On extrait le paramètre de la reponse reçu,
-																			qui correspond au nombre de messages*/
+																			qui correspond à l'état de la suppression du mail*/
 	if(rep == 101){
+		printf("\n");
 		printf("Votre message a bien été supprimé.\n");
+		printf("\n");
+		printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 		return 0;
 	} else {
 		if (rep == 505){
+			printf("\n");
 			printf("Erreur lors de la suppression, le message n'a pas pu etre effacé.\n");
+			printf("\n");
+			printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 			return 1;
 		} else {
+			printf("\n");
 			printf("Erreur inconnue.\n");
+			printf("\n");
+			printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 			return 1;
 		}
 	}
-	return 0;
+	return 0;	/*La fonction retourne 0 si elle s'execute correctement*/
 }
 
 /*__________________________________Envoie d'un message______________________________________*/
@@ -562,24 +590,31 @@ int Send(){
 
 	/*Réception de la réponse du serveur*/
 	message = Reception();	/*On stocke la reception dans la variable message*/
-	sscanf(message,"Reply/%d$*",&rep);	/*On extrait le paramètre de la reponse reçu, qui correspond
-	 																		au nombre de messages*/
+	sscanf(message,"Reply/%d$*",&rep);	/*On extrait le paramètre de la reponse reçu,
+																			qui correspond à l'état de reception du mail*/
 	if(rep == 101){
+		printf("\n");
 		printf("Votre message a été envoyé.\n");
 		return 0;
 	} else {
 		if (rep == 303){
+			printf("\n");
 			printf("Utilisateur incorrecte, veuillez renseignez un destinataire existant.\n");
-			return 2;
+			printf("\n");
+			printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
+			return 1;
 		} else {
+			printf("\n");
 			printf("Erreur inconnue.\n");
+			printf("\n");
+			printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 			return 1;
 		}
 	}
 
 	printf("\n");
 	printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
-	return 0;
+	return 0;	/*La fonction retourne 0 si elle s'execute correctement*/
 }
 
 /*______________________________Fonction nombres de messages_________________________________*/
@@ -609,16 +644,19 @@ int Inbox(){
 
 	/*Réception de la réponse du serveur*/
 	message = Reception();	/*On stocke la reception dans la variable message*/
-	sscanf(message,"Number/%d$*",&num);	/*On extrait le paramètre de la reponse reçu, qui correspond au nombre de messages*/
+	sscanf(message,"Number/%d$*",&num);	/*On extrait le paramètre de la reponse reçu,
+																			qui correspond au nombre de messages*/
 
 	/*Test si il y a des messages présents sur le serveur*/
 	if(num != 0) {
-		printf("Vous avez %s messages.\n", num); /*Si l'utilisateur a des messages, son nombre de message est affiché*/
-		free(message);
+		printf("Vous avez %s messages.\n", num); /*Si l'utilisateur a des messages,
+																						son nombre de message est affiché*/
+		free(message);	/*Libération de la mémoire*/
 		printf("\n");
 		printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 	} else {
-		printf("Vous n'avez pas de messages.\n");	/*Si il n'a pas de message présent sur le serveur, l'utilisateur est averti*/
+		printf("Vous n'avez pas de messages.\n");	/*Si il n'a pas de message présent sur le serveur,
+																							l'utilisateur est averti*/
 		printf("\n");
 		printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 		return 1;
@@ -645,16 +683,16 @@ int Deconnexion(){
 		printf("*** Copyright FFSSSD ************************** Version 1.0 ***\n");
 		printf("\n");
 
-		choix = Choix();
-		if (choix == 1){
+		choix = Choix(); /*Récupération du choix de l'utilisateur*/
+		if (choix == 1){	/*Si son choix est 1, on ferme la connexion avec le serveur*/
 			Terminaison();
 			printf("Vous êtes maintenant déconnecté\n");
 			return 0;
-		} else if (choix == 2){
+		} else if (choix == 2){	/*Si son choix est 2, on retourne 1 pour revenir au menu précédent*/
 			return 1;
 		} else {
 			printf("Veuillez renseignez un choix valide.\n");
 		}
 	} while(choix != 1 && choix != 2);
-	return 0;
+	return 0;	/*La fonction retourne 0 si elle s'execute correctement*/
 }
