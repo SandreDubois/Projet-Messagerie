@@ -255,20 +255,24 @@ int Authentification(){
 	/*Récupération de l'adresse mail*/
 	printf("Veuillez saisir votre adresse mail :\n");
 	FreeBuffer(); /*On vide le buffer, pour eviter toutes erreurs ultérieure*/
-	fgets(adresse_client, 30, stdin);	/*On récupère la saisie du clavier qui est l'adresse mail dans la variable "adresse_client"*/
-	adresse_client[strlen(adresse_client)-1] = '\0';	/*On retire le "\n" à la requête  car fgets met automatiquement un "\n" à la fin*/
+	fgets(adresse_client, 30, stdin);	/*On récupère la saisie du clavier qui est l'adresse mail
+	 																	dans la variable "adresse_client"*/
+	adresse_client[strlen(adresse_client)-1] = '\0';	/*On retire le "\n" à la requête car fgets met
+																										automatiquement un "\n" à la fin*/
 
 	printf("\n");	/*Retour à la ligne pour un affichage plus clair*/
 
 	/*Récupération du mot de passe*/
 	printf("Veuillez saisir votre mot de passe :\n");
-	fgets(mdp_client, 20, stdin);	/*On récupère la saisie du clavier qui est le mot de passe dans la variable "mdp_client"*/
+	fgets(mdp_client, 20, stdin);	/*On récupère la saisie du clavier qui est le mot de passe
+	 															dans la variable "mdp_client"*/
 	mdp_client[strlen(mdp_client)-1] = '\0'; /*Suppression du "\n" à la fin*/
 
 	/*Concatenation des différents éléments*/
-	sprintf(requete, "Authentification/%s/%s$*\n", adresse_client, mdp_client);	/*On concatene les identifiants et mot de passe avec la requête
-																																								pour avoir la syntaxe "Authentification/identifiant/motdepasse$*"*/
-	/*printf("%s\n", requete);	/*Retour de la requête complete pour test*/
+	sprintf(requete, "Authentification/%s/%s$*\n", adresse_client, mdp_client);	/*On concatene les identifiants
+																																							et mot de passe avec la requête
+																																							pour avoir la syntaxe
+																																							"Authentification/identifiant/motdepasse$*"*/
 
 	/*Test de l'émission de la requete*/
 	if(Emission(requete)!=1) { /*On test si l'envoie de la requete s'est faite correctement sinon erreur lors de l'émission*/
@@ -278,7 +282,8 @@ int Authentification(){
 
 	/*Réception de la réponse du serveur*/
 	message = Reception();	/*On stocke la reception dans la variable message*/
-	sscanf(message,"Reply/%d$*",&rep); /*On extrait le paramètre de la reponse reçu, qui correspond à l'état de l'authentification*/
+	sscanf(message,"Reply/%d$*",&rep); /*On extrait le paramètre de la reponse reçu,
+																		qui correspond à l'état de l'authentification*/
 
 	/*Exploitation de la réponse du serveur*/
 	if(rep == 101){	/*Si on reçoit un "Reply/101$*", alors authentification correcte*/
@@ -286,7 +291,7 @@ int Authentification(){
 		return 0;
 	} else {
 		if (rep == 202){	/*Si on reçoit un "Reply/202$*", alors authentification échec*/
-			printf("Erreur d'authentification, votre adresse mail et le mot de passe ne correspondent pas.\n");	/*Affichage message d'erreur*/
+			printf("Erreur d'authentification, votre adresse mail et le mot de passe ne correspondent pas.\n");
 			return 1;
 		} else { /*Sinon erreur inconnue*/
 			printf("Erreur inconnue.\n");	/*Affichage message d'erreur*/
@@ -306,7 +311,7 @@ void Menu_Principal(){
 	printf("*                        Menu Principal                       *\n");
 	printf("*                                                             *\n");
 	printf("*                                                             *\n");
-	printf("***************************************************************\n");
+	printf("***************************************************************\n");	/*Affichage Menu_Principal*/
   printf("************ 1 - Pour lire un mail                 ************\n");
 	printf("************ 2 - Pour supprimer un mail            ************\n");
 	printf("************ 3 - Pour envoyer un mail              ************\n");
@@ -317,7 +322,7 @@ void Menu_Principal(){
 	printf("\n");
 }
 
-/*___________________________Récupération du choix de l'utilisateur____________________________*/
+/*________________Récupération du choix de l'utilisateur pour les menus________________________*/
 int Choix(){
 	int choix;
 	scanf("%d", &choix);
@@ -352,7 +357,7 @@ int Read(){
 
 	/*Récupération du nombre de messages à effacer*/
 	printf("Quel message voulez-vous lire :\n");
-	FreeBuffer();
+	FreeBuffer();	/*On vide le buffer, pour eviter toutes erreurs ultérieure*/
 	fgets(num_message, 3, stdin);	/*On récupère la saisie du clavier qui est le nombre de message dans la variable "num_message"*/
 	num_message[strlen(num_message)-1] = '\0'; /*Suppression du "\n" à la fin*/
 
@@ -371,7 +376,7 @@ int Read(){
 	message = Reception();	/*On stocke la reception dans la variable message*/
 	sscanf(message,"Reply/%d$*",&rep);	/*On extrait le paramètre de la reponse reçu, qui correspond au nombre de messages*/
 	if(rep == 101){
-		//A FAIRE
+		/*Reception des différents élements du mail*/
 		message = Reception();
 		sscanf(message,"Mail/%s$*",&mail_numero);	/*On extrait le paramètre de la reponse reçu, qui correspond au numéro du mail*/
 		message = Reception();
@@ -381,6 +386,8 @@ int Read(){
 		message = Reception();
 		sscanf(message,"Mail/%s$*",&mail_contenu);	/*On extrait le paramètre de la reponse reçu, qui correspond au contenu du mail*/
 		printf("\n");
+
+		/*Affichage des différents éléments du mail*/
 		printf("Mail numéro : %s\n", mail_numero);
 		printf("Expéditeur : %s\n", mail_expediteur);
 		printf("Objet : %s\n", mail_objet);
@@ -390,6 +397,7 @@ int Read(){
 		printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 		return 0;
 	} else {
+		/*Gestion d'erreur si c'est pas "Reply/101$*"*/
 		if (rep == 404){
 			printf("Erreur lors de la lecture, le message n'a pas pu etre lu.\n");
 			return 1;
@@ -425,7 +433,8 @@ int Delete(){
 	/*Récupération du nombre de messages à effacer*/
 	printf("Quel message voulez-vous effacez :\n");
 	FreeBuffer();
-	fgets(num_message, 3, stdin);	/*On récupère la saisie du clavier qui est le nombre de message dans la variable "num_message"*/
+	fgets(num_message, 3, stdin);	/*On récupère la saisie du clavier qui est le nombre de
+	 															message dans la variable "num_message"*/
 	num_message[strlen(num_message)-1] = '\0'; /*Suppression du "\n" à la fin*/
 
 	/*Concatenation des différents éléments*/
@@ -440,7 +449,8 @@ int Delete(){
 
 	/*Réception de la réponse du serveur*/
 	message = Reception();	/*On stocke la reception dans la variable message*/
-	sscanf(message,"Reply/%d$*",&rep);	/*On extrait le paramètre de la reponse reçu, qui correspond au nombre de messages*/
+	sscanf(message,"Reply/%d$*",&rep);	/*On extrait le paramètre de la reponse reçu,
+																			qui correspond au nombre de messages*/
 	if(rep == 101){
 		printf("Votre message a bien été supprimé.\n");
 		return 0;
@@ -462,11 +472,15 @@ int Send(){
 	/*Déclaration des variables*/
 	char *message = NULL;	/*Permet de stocker le message reçu du serveur*/
 	char mail_destinataire[30]; /*Permet récupérer le destinataire du mail pour l'envoyer au serveur*/
-	char mail_objet[100];
-	char *mail_contenu = calloc(5000, sizeof (char)); /*Permet récupérer le contenu du mail pour l'envoyer au serveur*/
+	char mail_objet[100];	/*Permet récupérer l'objet du mail pour l'envoyer au serveur*/
+	char *mail_contenu = calloc(5000, sizeof (char)); /*Permet récupérer le contenu du mail
+																										pour l'envoyer au serveur, alloue 5000 cases mémoire
+																										initialisées avec '\0' pour éviter des problèmes de
+																										buffer et segmentation*/
 	char requete[5000];	/*Permet de stocker la requête complete concatené dans un tableau de 5000 caractères'*/
 	int rep;	/*Permet de stocker le type de réponse du serveur*/
-	int i = 0;
+	char remplacement = '#'; /*Permet un caractère pour remplacer les "\n" contenu dans le contenu du mail*/
+	int i = 0; /*Variable pour la boucle do while pour le contenu du mail
 
 
 	/*En-tête menu nombre de message*/
@@ -484,12 +498,13 @@ int Send(){
 	/*Récupération du destinataire du message à envoyer*/
 	printf("Veuillez rentrer l'adresse de votre destinataire :\n");
 	FreeBuffer();
-	fgets(mail_destinataire, 30, stdin);	/*On récupère la saisie du clavier qui est le nombre de message dans la variable "num_message"*/
+	fgets(mail_destinataire, 30, stdin);	/*On récupère la saisie du clavier qui est
+																				le nombre de message dans la variable "num_message"*/
 	mail_destinataire[strlen(mail_destinataire)-1] = '\0'; /*Suppression du "\n" à la fin*/
 
 	/*Concatenation des différents éléments*/
 	sprintf(requete, "Mail/%s$*\n", mail_destinataire);	/*On concatene le nombre de message avec la requête
-																									pour avoir la syntaxe "Mail/identifiant$*"*/
+																											pour avoir la syntaxe "Mail/identifiant$*"*/
 
 	/*Test de l'émission de l'envoie de la requete*/
 	if(Emission(requete)!=1) {
@@ -501,8 +516,8 @@ int Send(){
 
 	/*Récupération de l'objet du message à envoyer*/
 	printf("Veuillez rentrer l'objet de votre mail :\n");
-	//FreeBuffer();
-	fgets(mail_objet, 100, stdin);	/*On récupère la saisie du clavier qui est le nombre de message dans la variable "num_message"*/
+	fgets(mail_objet, 100, stdin);	/*On récupère la saisie du clavier qui est le nombre de
+																	message dans la variable "num_message"*/
 	mail_objet[strlen(mail_objet)-1] = '\0'; /*Suppression du "\n" à la fin*/
 
 	/*Concatenation des différents éléments*/
@@ -518,8 +533,9 @@ int Send(){
 	printf("\n");	/*Retour à la ligne pour un affichage plus clair*/
 
 	/*Récupération du contenu du message à envoyer*/
-	printf("Contenu de votre mail (Pressez la touche \"ECHAP\" pour terminer) :\n");
-	//FreeBuffer();
+	printf("Contenu de votre mail (Terminez par \"ECHAP\" puis \"Entrée\" pour envoyer votre mail) :\n");
+
+	/*Boucle do while pour récupérer tous le contenu du mail jusqu'au caractère ASCII 27 correpondant à ECHAP"*/
 	do{
 		mail_contenu[i] = fgetc(stdin);
 		if (mail_contenu[i] == 27)
@@ -527,8 +543,12 @@ int Send(){
 		i++;
 	} while (1);
 
-	//fgets(mail_contenu, 5000, stdin);	/*On récupère la saisie du clavier qui est le nombre de message dans la variable "num_message"*/
-	//mail_contenu[strlen(mail_contenu)-1] = '\0'; /*Suppression du "\n" à la fin*/
+	/*Boucle de transparence pour transformer les "\n" en "#", opération inverse à faire coté reception*/
+	for(i=0 ; i < strlen(mail_contenu); i++){
+		if(mail_contenu[i] == '\n'){
+			mail_contenu[i] = remplacement;
+		}
+	}
 
 	/*Concatenation des différents éléments*/
 	sprintf(requete, "Mail/%s$*\n", mail_contenu);	/*On concatene le nombre de message avec la requête
@@ -542,7 +562,8 @@ int Send(){
 
 	/*Réception de la réponse du serveur*/
 	message = Reception();	/*On stocke la reception dans la variable message*/
-	sscanf(message,"Reply/%d$*",&rep);	/*On extrait le paramètre de la reponse reçu, qui correspond au nombre de messages*/
+	sscanf(message,"Reply/%d$*",&rep);	/*On extrait le paramètre de la reponse reçu, qui correspond
+	 																		au nombre de messages*/
 	if(rep == 101){
 		printf("Votre message a été envoyé.\n");
 		return 0;
