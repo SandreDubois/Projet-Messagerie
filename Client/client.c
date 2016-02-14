@@ -396,7 +396,7 @@ int Consult(){
 				printf("Expéditeur : %s\n", mail_expediteur);
 				printf("Objet : %s\n", mail_objet);
 			}
-		} while (message != "Reply/606$*"); /*On refait cette boucle tant qu'on ne reçoit pas la chaine "Reply/606$*"*/
+		} while (strcmp(message, fin_consult); /*On refait cette boucle tant qu'on ne reçoit pas la chaine "Reply/606$*"*/
 	}
 	printf("\n");
 	printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
