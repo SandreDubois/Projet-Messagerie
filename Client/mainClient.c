@@ -75,7 +75,7 @@ int main() {
 				case 1:
 					/*Appel de la fonction Lecture d'un mail*/
 					retourConsult = Consult();
-					if (RetourMenuPrincipal_2() == 0){ /*Une fois la fonction est fini correctement,
+					if (RetourMenuPrincipal() == 0){ /*Une fois la fonction est fini correctement,
 																					 on execute la fonction RetourMenuPrincipal*/
 						break;
 					}
@@ -91,7 +91,7 @@ int main() {
 				case 3:
 					/*Appel de la fonction Suppression d'un message*/
 					retourDelete = Delete();
-					if (RetourMenuPrincipal_2() == 0){	/*Une fois la fonction est fini correctement,
+					if (RetourMenuPrincipal() == 0){	/*Une fois la fonction est fini correctement,
 																					 on execute la fonction RetourMenuPrincipal*/
 						break;
 					}
@@ -99,7 +99,7 @@ int main() {
 				case 4:
 					/*Appel de la fonction Ecriture d'un message*/
 					retourSend = Send();
-					if (RetourMenuPrincipal_2() == 0){	/*Une fois la fonction est fini correctement,
+					if (RetourMenuPrincipal() == 0){	/*Une fois la fonction est fini correctement,
 																					 on execute la fonction RetourMenuPrincipal*/
 						break;
 					}
@@ -107,7 +107,7 @@ int main() {
 				case 5:
 					/*Appel de la fonction Nombre de messages*/
 					retourInbox = Inbox();
-					if (RetourMenuPrincipal_2() == 0){	/*Une fois la fonction est fini correctement,
+					if (RetourMenuPrincipal() == 0){	/*Une fois la fonction est fini correctement,
 																					 on execute la fonction RetourMenuPrincipal*/
 						break;
 					}

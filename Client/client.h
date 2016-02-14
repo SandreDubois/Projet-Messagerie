@@ -48,9 +48,6 @@ void FreeBuffer();
 /*Fonction pour revenir au menu principal*/
 int RetourMenuPrincipal();
 
-/*Fonction pour revenir au menu principal v2*/
-int RetourMenuPrincipal_2();
-
 /*Fonction pour récupérer le choix du menu de l'utilisateur*/
 int Choix();
 
@@ -62,6 +59,9 @@ int Authentification();
 
 /*Fonction affichage du menu principal*/
 void Menu_Principal();
+
+/*Fonction pour récupérer et afficher la liste des messages*/
+int Consult();
 
 /*Fonction de lecture d'un mail*/
 int Read();
