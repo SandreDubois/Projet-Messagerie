@@ -228,7 +228,7 @@ void Menu_Authentification(){
 	printf("*                    Menu d'Authentification                  *\n");
 	printf("*                                                             *\n");
 	printf("*                                                             *\n");
-	printf("***************************************************************\n");
+	printf("***************************************************************\n");	/*Affichage Menu_Authentification*/
   printf("*************** 1 - Pour vous authentifier ********************\n");
   printf("*************** 2 - Pour vous déconnecter  ********************\n");
 	printf("***************************************************************\n");
@@ -332,14 +332,12 @@ void Menu_Principal(){
 	printf("\n");
 }
 
-/*________________Récupération du choix de l'utilisateur pour les menus________________________*/
+/*_________________Récupération du choix de l'utilisateur pour les menus_______________________*/
 int Choix(){
 	int choix;
 	scanf("%d", &choix);
 	return choix;	/*La fonction retourne "choix" si elle s'execute correctement*/
 }
-
-/*________________________________Consultation des messages____________________________________*/
 
 /*__________________________________Lecture d'un messages______________________________________*/
 int Read(){
