@@ -20,6 +20,7 @@ int main() {
 	int choix = 0;	/*Contiendra le choix de l'utilisateur pour les menus*/
 	int retourAuthentification = 1;	/*Contiendra le retour de la fonction authentification*/
 	int retourDisconnect = 1;	/*Contiendra le retour de la fonction Disconnect*/
+	int retourConsult = 1; /*Contiendra le retour de la fonction Consult*/
 	int retourDelete = 1;	/*Contiendra le retour de la fonction Delete*/
 	int retourInbox = 1;	/*Contiendra le retour de la fonction Inbox*/
 	int retourRead = 1;	/*Contiendra le retour de la fonction Read*/
@@ -73,13 +74,21 @@ int main() {
 			switch (choix) {
 				case 1:
 					/*Appel de la fonction Lecture d'un mail*/
+					retourConsult = Consult();
+					if (RetourMenuPrincipal_2() == 0){ /*Une fois la fonction est fini correctement,
+																					 on execute la fonction RetourMenuPrincipal*/
+						break;
+					}
+
+				case 2:
+					/*Appel de la fonction Lecture d'un mail*/
 					retourRead = Read();
 					if (RetourMenuPrincipal() == 0){ /*Une fois la fonction est fini correctement,
 																					 on execute la fonction RetourMenuPrincipal*/
 						break;
 					}
 
-				case 2:
+				case 3:
 					/*Appel de la fonction Suppression d'un message*/
 					retourDelete = Delete();
 					if (RetourMenuPrincipal_2() == 0){	/*Une fois la fonction est fini correctement,
@@ -87,7 +96,7 @@ int main() {
 						break;
 					}
 
-				case 3:
+				case 4:
 					/*Appel de la fonction Ecriture d'un message*/
 					retourSend = Send();
 					if (RetourMenuPrincipal_2() == 0){	/*Une fois la fonction est fini correctement,
@@ -95,7 +104,7 @@ int main() {
 						break;
 					}
 
-				case 4:
+				case 5:
 					/*Appel de la fonction Nombre de messages*/
 					retourInbox = Inbox();
 					if (RetourMenuPrincipal_2() == 0){	/*Une fois la fonction est fini correctement,
@@ -103,7 +112,7 @@ int main() {
 						break;
 					}
 
-				case 5:
+				case 6:
 					/*Appel de la fonction Déconnexion*/
 					retourDisconnect = Disconnect();
 					if (retourDisconnect == 0){	/*Si Deconnexion se passe bien, on retourne 0

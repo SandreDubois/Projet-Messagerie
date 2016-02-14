@@ -243,7 +243,6 @@ void Menu_Authentification(){
 /*____________________________________Connexion au serveur______________________________________*/
 int Authentification(){
 	/*Déclaration des variables*/
-	//char *message = NULL; /*Permet de stocker le message reçu du serveur*/
 	char *message = calloc(50, sizeof (char));
 	int rep;	/*Permet de stocker le type de réponse du serveur*/
 	char adresse_client[30];	/*Permet de stocker l'adresse mail du client dans un tableau de 30 caractères'*/
@@ -327,11 +326,12 @@ void Menu_Principal(){
 	printf("*                                                             *\n");
 	printf("*                                                             *\n");
 	printf("***************************************************************\n");	/*Affichage Menu_Principal*/
-  printf("************ 1 - Pour lire un mail                 ************\n");
-	printf("************ 2 - Pour supprimer un mail            ************\n");
-	printf("************ 3 - Pour envoyer un mail              ************\n");
-	printf("************ 4 - Pour obtenir le nombre de message ************\n");
-	printf("************ 5 - Pour vous déconnecter             ************\n");
+	printf("************ 1 - Consulter votre boite mail        ************\n");
+  printf("************ 2 - Pour lire un mail                 ************\n");
+	printf("************ 3 - Pour supprimer un mail            ************\n");
+	printf("************ 4 - Pour envoyer un mail              ************\n");
+	printf("************ 5 - Pour obtenir le nombre de message ************\n");
+	printf("************ 6 - Pour vous déconnecter             ************\n");
 	printf("***************************************************************\n");
 	printf("*** Copyright FFSSSD ************************** Version 1.0 ***\n");
 	printf("\n");
@@ -344,10 +344,70 @@ int Choix(){
 	return choix;	/*La fonction retourne "choix" si elle s'execute correctement*/
 }
 
+/*_________________________Consultation de la boite de reception_______________________________*/
+int Consult(){
+	/*Déclaration des variables*/
+	char *message = calloc(50, sizeof (char));
+	char *mail_numero = NULL; /*Permet de stocker le numéro du mail envoyé par le serveur*/
+	char *mail_expediteur = NULL; /*Permet de stocker l'expéditeur du mail envoyé par le serveur*/
+	char *mail_objet = NULL; /*Permet de stocker l'objet du  mail envoyé par le serveur*/
+	char num_message[3]; /*Permet de stocker le numéro du message dans un tableaude 3 caractère*/
+	char requete[5000];	/*Permet de stocker la requête complete concatené dans un tableau de 5000 caractères'*/
+	int rep;	/*Permet de stocker le type de réponse du serveur*/
+
+	/*En-tête menu Suppression message*/
+	printf("***************************** MENU ****************************\n");
+	printf("*                                                             *\n");
+	printf("*                        TMP Messagerie                       *\n");
+	printf("*                                                             *\n");
+	printf("*              Consultation de la boite de reception          *\n");
+	printf("*                                                             *\n");
+	printf("*                                                             *\n");
+	printf("***************************************************************\n");
+	printf("*** Copyright FFSSSD ************************** Version 1.0 ***\n");
+	printf("\n");
+
+	/*Envoie de la requête "Consult$*" pour demander la boite de reception*/
+	/*Test de l'émission de l'envoie de la requete*/
+	if(Emission("Consult$*\n")!=1) {
+		printf("Erreur d'emission lors de l'envoie de Consult.\n");	/*Affichage message d'erreur*/
+		return 1;
+	}
+
+	/*Réception de la réponse du serveur*/
+	message = Reception();	/*On stocke la reception dans la variable message*/
+	sscanf(message,"Reply/%d$*",&rep);	/*On extrait le paramètre de la reponse reçu,
+																			qui correspond à l'état de la lecture du mail*/
+	if(rep == 101){
+		/*Reception des différents élements du mail*/
+		do{
+			message = Reception();
+			if (message == "Reply/606$*"){
+				return 0;
+			} else {
+				sscanf(message,"Content/%s$*",&mail_numero);	/*On extrait le paramètre de la reponse reçu, qui correspond au numéro du mail*/
+				message = Reception();
+				sscanf(message,"Content/%s$*",&mail_expediteur);	/*On extrait le paramètre de la reponse reçu, qui correspond à l"expéditeur du mail*/
+				message = Reception();
+				sscanf(message,"Content/%s$*",&mail_objet);	/*On extrait le paramètre de la reponse reçu, qui correspond à l'objet du mail*/
+				printf("\n");
+
+				/*Affichage des différents éléments du mail*/
+				printf("\n");
+				printf("----------------------------Mail n°%s--------------------------\n", mail_numero);
+				printf("Expéditeur : %s\n", mail_expediteur);
+				printf("Objet : %s\n", mail_objet);
+			}
+		} while (message != "Reply/606$*");
+	}
+	printf("\n");
+	printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
+	return 0;
+}
+
 /*__________________________________Lecture d'un messages______________________________________*/
 int Read(){
 	/*Déclaration des variables*/
-	//char *message = NULL;	/*Permet de stocker le message reçu du serveur*/
 	char *message = calloc(50, sizeof (char));
 	char *mail_numero = NULL; /*Permet de stocker le numéro du mail envoyé par le serveur*/
 	char *mail_expediteur = NULL; /*Permet de stocker l'expéditeur du mail envoyé par le serveur*/
@@ -356,7 +416,7 @@ int Read(){
 	char num_message[3]; /*Permet de stocker le numéro du message dans un tableaude 3 caractère*/
 	char requete[5000];	/*Permet de stocker la requête complete concatené dans un tableau de 5000 caractères'*/
 	char remplacement = '\n'; /*Permet de stocker un caractère pour remplacer les "#" contenu dans le contenu du mail*/
-	int i = 0;
+	int i = 0; /*Variable utilisée pour la boucle permettant de parcourir le contenu du mail*/
 	int rep;	/*Permet de stocker le type de réponse du serveur*/
 
 	/*En-tête menu Suppression message*/
@@ -444,7 +504,6 @@ int Read(){
 /*__________________________________Suppression Message________________________________________*/
 int Delete(){
 	/*Déclaration des variables*/
-	//char *message = NULL;	/*Permet de stocker le message reçu du serveur*/
 	char *message = calloc(50, sizeof (char));
 	int num_message;
 	char requete[5000];	/*Permet de stocker la requête complete concatené dans un tableau de 5000 caractères'*/
@@ -526,7 +585,6 @@ int Delete(){
 
 int Send(){
 	/*Déclaration des variables*/
-	//char *message = NULL;	/*Permet de stocker le message reçu du serveur*/
 	char *message = calloc(50, sizeof (char));
 	char mail_destinataire[30]; /*Permet récupérer le destinataire du mail pour l'envoyer au serveur*/
 	char mail_objet[100];	/*Permet récupérer l'objet du mail pour l'envoyer au serveur*/
@@ -649,7 +707,6 @@ int Send(){
 /*______________________________Fonction nombres de messages_________________________________*/
 int Inbox(){
 	/*Déclaration des variables*/
-	//char *message = NULL;	/*Permet de stocker le message reçu du serveur*/
 	char *message = calloc(50, sizeof (char));
 	int num; /*Permet de stocker le nombre de message*/
 
