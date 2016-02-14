@@ -39,32 +39,43 @@ int ReceptionBinaire(char *donnees, size_t tailleMax);
  */
 int EmissionBinaire(char *donnees, size_t taille);
 
-/* Ferme la connexion.
- */
+/* Ferme la connexion.*/
 void Terminaison();
 
+/*Fonction vider Buffer*/
 void FreeBuffer();
 
+/*Fonction pour revenir au menu principal*/
 int RetourMenuPrincipal();
 
+/*Fonction pour revenir au menu principal v2*/
 int RetourMenuPrincipal_2();
 
+/*Fonction pour récupérer le choix du menu de l'utilisateur*/
 int Choix();
 
+/*Fonction affichage du menu d'Authentification*/
 void Menu_Authentification();
 
+/*Fonction d'Authentification*/
 int Authentification();
 
+/*Fonction affichage du menu principal*/
 void Menu_Principal();
 
+/*Fonction de lecture d'un mail*/
 int Read();
 
+/*Fonction de suppression d'un mail*/
 int Delete();
 
+/*Fonction d'envoie du Message*/
 int Send();
 
+/*Fonction pour récupérer le nombre de message*/
 int Inbox();
 
+/* Ferme la connexion.*/
 int Deconnexion();
 
 #endif
