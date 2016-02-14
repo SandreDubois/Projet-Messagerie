@@ -378,27 +378,30 @@ int Consult(){
 	message = Reception();	/*On stocke la reception dans la variable message*/
 	sscanf(message,"Reply/%d$*",&rep);	/*On extrait le paramètre de la reponse reçu,
 																			qui correspond à l'état de la lecture du mail*/
-	if(rep == 101){
+	if(rep == 101){ /*Si on reçoit un "Reply/101$*", on rentre dans le if*/
 		/*Reception des différents élements du mail*/
 		do{
 			message = Reception();
-			if (message == "Reply/606$*"){
+			if (message == "Reply/606$*"){ /*Si le premier message correspond à "Reply/606$*",
+																		 la fonction retourne 0*/
 				return 0;
-			} else {
-				sscanf(message,"Content/%s$*",&mail_numero);	/*On extrait le paramètre de la reponse reçu, qui correspond au numéro du mail*/
+			} else { /*Sinon cela sera les en-têtes des mails que l'on récupère et affiche*/
+				sscanf(message,"Content/%s$*",&mail_numero);	/*On extrait le paramètre de la reponse reçu,
+																											qui correspond au numéro du mail*/
 				message = Reception();
-				sscanf(message,"Content/%s$*",&mail_expediteur);	/*On extrait le paramètre de la reponse reçu, qui correspond à l"expéditeur du mail*/
+				sscanf(message,"Content/%s$*",&mail_expediteur);	/*On extrait le paramètre de la reponse reçu,
+																													qui correspond à l"expéditeur du mail*/
 				message = Reception();
-				sscanf(message,"Content/%s$*",&mail_objet);	/*On extrait le paramètre de la reponse reçu, qui correspond à l'objet du mail*/
-				printf("\n");
+				sscanf(message,"Content/%s$*",&mail_objet);	/*On extrait le paramètre de la reponse reçu,
+																										qui correspond à l'objet du mail*/
 
-				/*Affichage des différents éléments du mail*/
+				/*Affichage de l'en-tête du mail*/
 				printf("\n");
 				printf("----------------------------Mail n°%s--------------------------\n", mail_numero);
 				printf("Expéditeur : %s\n", mail_expediteur);
 				printf("Objet : %s\n", mail_objet);
 			}
-		} while (message != "Reply/606$*");
+		} while (message != "Reply/606$*"); /*On refait cette boucle tant qu'on ne reçoit pas la chaine "Reply/606$*"*/
 	}
 	printf("\n");
 	printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
