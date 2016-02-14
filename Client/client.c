@@ -243,7 +243,8 @@ void Menu_Authentification(){
 /*____________________________________Connexion au serveur______________________________________*/
 int Authentification(){
 	/*Déclaration des variables*/
-	char *message = NULL; /*Permet de stocker le message reçu du serveur*/
+	//char *message = NULL; /*Permet de stocker le message reçu du serveur*/
+	char *message = calloc(50, sizeof (char));
 	int rep;	/*Permet de stocker le type de réponse du serveur*/
 	char adresse_client[30];	/*Permet de stocker l'adresse mail du client dans un tableau de 30 caractères'*/
 	char mdp_client[20];	/*Permet de stocker le mot de passe du client dans un tableau de 20 caractères'*/
@@ -342,7 +343,8 @@ int Choix(){
 /*__________________________________Lecture d'un messages______________________________________*/
 int Read(){
 	/*Déclaration des variables*/
-	char *message = NULL;	/*Permet de stocker le message reçu du serveur*/
+	//char *message = NULL;	/*Permet de stocker le message reçu du serveur*/
+	char *message = calloc(50, sizeof (char));
 	char *mail_numero = NULL; /*Permet de stocker le numéro du mail envoyé par le serveur*/
 	char *mail_expediteur = NULL; /*Permet de stocker l'expéditeur du mail envoyé par le serveur*/
 	char *mail_objet = NULL; /*Permet de stocker l'objet du  mail envoyé par le serveur*/
@@ -438,7 +440,8 @@ int Read(){
 /*__________________________________Suppression Message________________________________________*/
 int Delete(){
 	/*Déclaration des variables*/
-	char *message = NULL;	/*Permet de stocker le message reçu du serveur*/
+	//char *message = NULL;	/*Permet de stocker le message reçu du serveur*/
+	char *message = calloc(50, sizeof (char));
 	int num_message;
 	char requete[5000];	/*Permet de stocker la requête complete concatené dans un tableau de 5000 caractères'*/
 	char confirmation; /*Permet de stocker la confirmation de suppression de l'Utilisateur*/
@@ -519,7 +522,8 @@ int Delete(){
 
 int Send(){
 	/*Déclaration des variables*/
-	char *message = NULL;	/*Permet de stocker le message reçu du serveur*/
+	//char *message = NULL;	/*Permet de stocker le message reçu du serveur*/
+	char *message = calloc(50, sizeof (char));
 	char mail_destinataire[30]; /*Permet récupérer le destinataire du mail pour l'envoyer au serveur*/
 	char mail_objet[100];	/*Permet récupérer l'objet du mail pour l'envoyer au serveur*/
 	char *mail_contenu = calloc(5000, sizeof (char)); /*Permet récupérer le contenu du mail
@@ -641,7 +645,8 @@ int Send(){
 /*______________________________Fonction nombres de messages_________________________________*/
 int Inbox(){
 	/*Déclaration des variables*/
-	char *message = NULL;	/*Permet de stocker le message reçu du serveur*/
+	//char *message = NULL;	/*Permet de stocker le message reçu du serveur*/
+	char *message = calloc(50, sizeof (char));
 	int num; /*Permet de stocker le nombre de message*/
 
 	/*En-tête menu nombre de message*/
