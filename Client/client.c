@@ -302,10 +302,14 @@ int Authentification(){
 		return 0;
 	} else {
 		if (rep == 202){	/*Si on reçoit un "Reply/202$*", alors authentification échec*/
+			printf("\n");
 			printf("Erreur d'authentification, votre adresse mail et le mot de passe ne correspondent pas.\n");
+			system("sleep 3");
 			return 1;
 		} else { /*Sinon erreur inconnue*/
+			printf("\n");
 			printf("Erreur inconnue.\n");	/*Affichage message d'erreur*/
+			system("sleep 3");
 			return 1;
 		}
 	}
