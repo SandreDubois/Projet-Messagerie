@@ -121,8 +121,8 @@ char *Reception() {
  * Attention, le message doit etre termine par \n
  */
 int Emission(char *message) {
-	if(strstr(message, "\n") == NULL) {
-		fprintf(stderr, "Emission, Le message n'est pas termine par \\n.\n");
+	if(strstr(message, "$*") == NULL) {
+		fprintf(stderr, "Emission, Le message n'est pas termine par $*.\n");
 	}
 	int taille = strlen(message);
 	if (send(socketClient, message, taille,0) == -1) {
@@ -686,7 +686,7 @@ int Inbox(){
 }
 
 /*____________________________________Déconnexion________________________________________*/
-int Deconnexion(){
+int Disconnect(){
 	int choix = 0;
 	do {
 		/*En-tête menu déconnexion*/

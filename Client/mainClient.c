@@ -19,7 +19,7 @@ int main() {
 	/*Déclaration et initialisation des variables*/
 	int choix = 0;	/*Contiendra le choix de l'utilisateur pour les menus*/
 	int retourAuthentification = 1;	/*Contiendra le retour de la fonction authentification*/
-	int retourDeconnexion = 1;	/*Contiendra le retour de la fonction Deconnexion*/
+	int retourDisconnect = 1;	/*Contiendra le retour de la fonction Disconnect*/
 	int retourDelete = 1;	/*Contiendra le retour de la fonction Delete*/
 	int retourInbox = 1;	/*Contiendra le retour de la fonction Inbox*/
 	int retourRead = 1;	/*Contiendra le retour de la fonction Read*/
@@ -42,8 +42,8 @@ int main() {
 
 			case 2:
 				/*Deconnexion*/
-				retourDeconnexion = Deconnexion();
-				if (retourDeconnexion == 0){	/*Si il choisit la déconnexion, cela retourne 0
+				retourDisconnect = Disconnect();
+				if (retourDisconnect == 0){	/*Si il choisit la déconnexion, cela retourne 0
 																			donc on sort de la boucle*/
 					return 0;
 				}
@@ -56,9 +56,9 @@ int main() {
 		system("clear");
 		printf("Chargement en cours, veuillez patientez.\n");
 		system("sleep 1");
-	} while(retourDeconnexion != 0 && retourAuthentification != 0); /*On refait cette boucle tant que
-																																	l'utilisateur Deconnexion retourne 1,
-																																	c'est à dire qu'il veuille revenir au menu
+	} while(retourDisconnect != 0 && retourAuthentification != 0); /*On refait cette boucle tant que
+																																	la fonction Disconnect retourne 1,
+																																	c'est à dire que l'utilisateur veuille revenir au menu
 																																	précedent et tant que l'authentification se passe
 																																	mal.*/
 
@@ -105,8 +105,8 @@ int main() {
 
 				case 5:
 					/*Appel de la fonction Déconnexion*/
-					retourDeconnexion = Deconnexion();
-					if (retourDeconnexion == 0){	/*Si Deconnexion se passe bien, on retourne 0
+					retourDisconnect = Disconnect();
+					if (retourDisconnect == 0){	/*Si Deconnexion se passe bien, on retourne 0
 																				pour sortir de la boucle*/
 						return 0;
 					}
@@ -119,7 +119,7 @@ int main() {
 			system("clear");
 			printf("Chargement en cours, veuillez patientez.\n");
 			system("sleep 1");
-		} while(retourDeconnexion != 0); /*On sort pas de cette boucle tant que l'utilisateur ne
+		} while(retourDisconnect != 0); /*On sort pas de cette boucle tant que l'utilisateur ne
 																		choisit pas déconnexion et confirme la déconnexion
 																		ainsi la fonction Déconnxion retourne 1*/
 	}
