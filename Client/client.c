@@ -190,11 +190,10 @@ void Terminaison() {
 /*___________________________________________DEBUT______________________________________________*/
 
 /*Fonction pour vider le buffer*/
-void FreeBuffer()
-{
+void FreeBuffer(){
     int c = 0;
     while (c != '\n' && c != EOF)
-    {
+		{
         c = getchar();
     }
 }
@@ -352,6 +351,8 @@ int Read(){
 	char *mail_contenu = NULL; /*Permet de stocker le contenu mail envoyé par le serveur*/
 	char num_message[3]; /*Permet de stocker le numéro du message dans un tableaude 3 caractère*/
 	char requete[5000];	/*Permet de stocker la requête complete concatené dans un tableau de 5000 caractères'*/
+	char remplacement = '\n'; /*Permet de stocker un caractère pour remplacer les "#" contenu dans le contenu du mail*/
+	int i = 0;
 	int rep;	/*Permet de stocker le type de réponse du serveur*/
 
 	/*En-tête menu Suppression message*/
@@ -399,6 +400,13 @@ int Read(){
 		sscanf(message,"Mail/%s$*",&mail_contenu);	/*On extrait le paramètre de la reponse reçu, qui correspond au contenu du mail*/
 		printf("\n");
 
+		/*Boucle de transparence pour transformer les "#" en "\n", opération inverse à faire coté reception*/
+		for(i=0 ; i < strlen(mail_contenu); i++){
+			if(mail_contenu[i] == '#'){
+				mail_contenu[i] = remplacement;
+			}
+		}
+
 		/*Affichage des différents éléments du mail*/
 		printf("\n");
 		printf("Mail numéro : %s\n", mail_numero);
@@ -433,16 +441,18 @@ int Read(){
 int Delete(){
 	/*Déclaration des variables*/
 	char *message = NULL;	/*Permet de stocker le message reçu du serveur*/
-	char num_message[3]; /*Permet de stocker le numéro du message dans un tableaude 3 caractère*/
+	int num_message;
 	char requete[5000];	/*Permet de stocker la requête complete concatené dans un tableau de 5000 caractères'*/
-	int rep;	/*Permet de stocker le type de réponse du serveur*/
+	char confirmation; /*Permet de stocker la confirmation de suppression de l'Utilisateur*/
+	int rep = 0;	/*Permet de stocker le type de réponse du serveur*/
+
 
 	/*En-tête menu Suppression message*/
 	printf("***************************** MENU ****************************\n");
 	printf("*                                                             *\n");
 	printf("*                        TMP Messagerie                       *\n");
 	printf("*                                                             *\n");
-	printf("*                      Suppression message                    *\n");
+	printf("*                        Suppression mail                     *\n");
 	printf("*                                                             *\n");
 	printf("*                                                             *\n");
 	printf("***************************************************************\n");
@@ -450,14 +460,27 @@ int Delete(){
 	printf("\n");
 
 	/*Récupération du nombre de messages à effacer*/
-	printf("Quel message voulez-vous effacez :\n");
-	FreeBuffer();
-	fgets(num_message, 3, stdin);	/*On récupère la saisie du clavier qui est le nombre de
-	 															message dans la variable "num_message"*/
-	num_message[strlen(num_message)-1] = '\0'; /*Suppression du "\n" à la fin*/
+	do {
+		printf("Quel mail voulez-vous effacez :\n");
+		if (scanf("%d", &num_message) != 1){	/*Récupération du numéro de message et erreur
+																					si c'est pas un entier*/
+			printf("Veuillez saisir un entier.\n");
+			system("sleep 2");
+			return 1;	/*On sort de la fonction si c'est pas un entier*/
+		}
+
+		printf("\n");
+		printf("Etes-vous sûr de bien vouloir supprimer le mail n°%d ? (Y/n)\n", num_message); /*On demande
+																																													confirmation
+																																													pour la suppression
+																																													du mail*/
+		FreeBuffer();
+		scanf("%1c", &confirmation);	/*On stocke la réponse dans confirmation*/
+		printf("\n");
+	} while (confirmation != 'Y'); /*On refait toute la boucle si l'utilisateur ne confirme pas*/
 
 	/*Concatenation des différents éléments*/
-	sprintf(requete, "Delete/%s$*\n", num_message);	/*On concatene le nombre de message avec la requête
+	sprintf(requete, "Delete/%d$*\n", num_message);	/*On concatene le nombre de message avec la requête
 																									pour avoir la syntaxe "Delete/nombredemessage$*"*/
 
 	/*Test de l'émission de l'envoie de la requete*/
@@ -507,7 +530,7 @@ int Send(){
 																										buffer et segmentation*/
 	char requete[5000];	/*Permet de stocker la requête complete concatené dans un tableau de 5000 caractères'*/
 	int rep;	/*Permet de stocker le type de réponse du serveur*/
-	char remplacement = '#'; /*Permet un caractère pour remplacer les "\n" contenu dans le contenu du mail*/
+	char remplacement = '#'; /*Permet de stocker un caractère pour remplacer les "\n" contenu dans le contenu du mail*/
 	int i = 0; /*Variable pour la boucle do while pour le contenu du mail
 
 

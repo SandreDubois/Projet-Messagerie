@@ -82,7 +82,7 @@ int main() {
 				case 2:
 					/*Appel de la fonction Suppression d'un message*/
 					retourDelete = Delete();
-					if (RetourMenuPrincipal() == 0){	/*Une fois la fonction est fini correctement,
+					if (RetourMenuPrincipal_2() == 0){	/*Une fois la fonction est fini correctement,
 																					 on execute la fonction RetourMenuPrincipal*/
 						break;
 					}
