@@ -462,8 +462,11 @@ int Delete(){
 		printf("Quel mail voulez-vous effacez :\n");
 		if (scanf("%d", &num_message) != 1){	/*Récupération du numéro de message et erreur
 																					si c'est pas un entier*/
+		  printf("\n");
 			printf("Veuillez saisir un entier.\n");
-			system("sleep 2");
+			printf("\n");
+			printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
+			//system("sleep 2");
 			return 1;	/*On sort de la fonction si c'est pas un entier*/
 		}
 
@@ -492,20 +495,17 @@ int Delete(){
 	sscanf(message,"Reply/%d$*",&rep);	/*On extrait le paramètre de la reponse reçu,
 																			qui correspond à l'état de la suppression du mail*/
 	if(rep == 101){
-		printf("\n");
 		printf("Votre message a bien été supprimé.\n");
 		printf("\n");
 		printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 		return 0;
 	} else {
 		if (rep == 505){
-			printf("\n");
 			printf("Erreur lors de la suppression, le message n'a pas pu etre effacé.\n");
 			printf("\n");
 			printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 			return 1;
 		} else {
-			printf("\n");
 			printf("Erreur inconnue.\n");
 			printf("\n");
 			printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");

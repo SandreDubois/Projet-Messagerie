@@ -86,7 +86,6 @@ int main() {
 																					 on execute la fonction RetourMenuPrincipal*/
 						break;
 					}
-					break;
 
 				case 3:
 					/*Appel de la fonction Ecriture d'un message*/
