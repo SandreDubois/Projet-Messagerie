@@ -344,6 +344,7 @@ int Consult(){
 	char *mail_objet = NULL; /*Permet de stocker l'objet du  mail envoyé par le serveur*/
 	char num_message[3]; /*Permet de stocker le numéro du message dans un tableaude 3 caractère*/
 	char requete[5000];	/*Permet de stocker la requête complete concatené dans un tableau de 5000 caractères'*/
+	char *fin_consult = "Reply/606$*"; /*Permettra la comparaison avec la réponse du serveur*/
 	int rep;	/*Permet de stocker le type de réponse du serveur*/
 
 	/*En-tête menu Suppression message*/
@@ -373,7 +374,7 @@ int Consult(){
 		/*Reception des différents élements du mail*/
 		do{
 			message = Reception();
-			if (message == "Reply/606$*"){ /*Si le premier message correspond à "Reply/606$*",
+			if (!strcmp(message, fin_consult)){ /*Si le premier message correspond à "Reply/606$*",
 																		 la fonction retourne 0*/
 				return 0;
 			} else { /*Sinon cela sera les en-têtes des mails que l'on récupère et affiche*/
