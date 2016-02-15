@@ -303,14 +303,16 @@ int Authentification(){
 			printf("\n");
 			printf("Erreur  lors de l'authentification.\n");
 			printf("Votre adresse mail et le mot de passe ne correspondent pas.\n");
-			printf("\n");
-			printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
+			system("sleep 3");
+			// printf("\n");
+			// printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 			return 1;
 		} else { /*Sinon erreur inconnue*/
 			printf("\n");
 			printf("Erreur inconnue.\n");	/*Affichage message d'erreur*/
-			printf("\n");
-			printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
+			system("sleep 3");
+			// printf("\n");
+			// printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 			return 1;
 		}
 		free(message); /*Libération de la mémoire*/
@@ -659,74 +661,72 @@ int Send(){
 		printf("\n");
 		printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 		return 1;
-	}
-
-	/*Récupération de l'objet du message à envoyer*/
-	printf("Veuillez rentrer l'objet de votre mail :\n");
-	fgets(mail_objet, 100, stdin);	/*On récupère la saisie du clavier qui est le nombre de
-																	message dans la variable "num_message"*/
-	mail_objet[strlen(mail_objet)-1] = '\0'; /*Suppression du "\n" à la fin*/
-
-	/*Concatenation des différents éléments*/
-	sprintf(requete, "Send/%s$*\n", mail_objet);	/*On concatene le nombre de message avec la requête
-																									pour avoir la syntaxe "Mail/objet$*"*/
-
-	/*Test de l'émission de l'envoie de la requete*/
-	if(Emission(requete)!=1) {
-		printf("Erreur lors de l'émission du destinataire.\n");
-		return 1;
-	}
-
-	printf("\n");	/*Retour à la ligne pour un affichage plus clair*/
-
-	/*Récupération du contenu du message à envoyer*/
-	printf("Contenu de votre mail (Terminez par \"ECHAP\" puis \"Entrée\" pour envoyer votre mail) :\n");
-
-	/*Boucle do while pour récupérer tous le contenu du mail jusqu'au caractère ASCII 27 correpondant à ECHAP"*/
-	do{
-		mail_contenu[i] = fgetc(stdin);
-		if (mail_contenu[i] == 27)
-			break;
-		i++;
-	} while (1);
-
-	/*Boucle de transparence pour transformer les "\n" en "#", opération inverse à faire coté reception*/
-	for(i=0 ; i < strlen(mail_contenu); i++){
-		if(mail_contenu[i] == '\n'){
-			mail_contenu[i] = remplacement;
-		}
-	}
-
-	/*Concatenation des différents éléments*/
-	sprintf(requete, "Send/%s$*\n", mail_contenu);	/*On concatene le nombre de message avec la requête
-																									pour avoir la syntaxe "Mail/contenu$*"*/
-
-	/*Test de l'émission de l'envoie de la requete*/
-	if(Emission(requete)!=1) {
-		printf("Erreur lors de l'émission du destinataire.\n");
-		return 1;
-	}
-
-	/*Réception de la réponse du serveur*/
-	message = Reception();	/*On stocke la reception dans la variable message*/
-	sscanf(message, "Reply/%d$*", &rep);	/*On extrait le paramètre de la reponse reçu,
-																			qui correspond à l'état de reception du mail*/
-	//free(message);	/*Libération de la mémoire*/
-	if(rep == 101){
-		printf("\n");
-		printf("Votre message a été envoyé.\n");
-		return 0;
 	} else {
+		/*Récupération de l'objet du message à envoyer*/
+		printf("Veuillez rentrer l'objet de votre mail :\n");
+		fgets(mail_objet, 100, stdin);	/*On récupère la saisie du clavier qui est le nombre de
+		message dans la variable "num_message"*/
+		mail_objet[strlen(mail_objet)-1] = '\0'; /*Suppression du "\n" à la fin*/
+
+		/*Concatenation des différents éléments*/
+		sprintf(requete, "Send/%s$*\n", mail_objet);	/*On concatene le nombre de message avec la requête
+		pour avoir la syntaxe "Mail/objet$*"*/
+
+		/*Test de l'émission de l'envoie de la requete*/
+		if(Emission(requete)!=1) {
+			printf("Erreur lors de l'émission du destinataire.\n");
+			return 1;
+		}
+
+		printf("\n");	/*Retour à la ligne pour un affichage plus clair*/
+
+		/*Récupération du contenu du message à envoyer*/
+		printf("Contenu de votre mail (Terminez par \"ECHAP\" puis \"Entrée\" pour envoyer votre mail) :\n");
+
+		/*Boucle do while pour récupérer tous le contenu du mail jusqu'au caractère ASCII 27 correpondant à ECHAP"*/
+		do{
+			mail_contenu[i] = fgetc(stdin);
+			if (mail_contenu[i] == 27)
+			break;
+			i++;
+		} while (1);
+
+		/*Boucle de transparence pour transformer les "\n" en "#", opération inverse à faire coté reception*/
+		for(i=0 ; i < strlen(mail_contenu); i++){
+			if(mail_contenu[i] == '\n'){
+				mail_contenu[i] = remplacement;
+			}
+		}
+
+		/*Concatenation des différents éléments*/
+		sprintf(requete, "Send/%s$*\n", mail_contenu);	/*On concatene le nombre de message avec la requête
+		pour avoir la syntaxe "Mail/contenu$*"*/
+
+		/*Test de l'émission de l'envoie de la requete*/
+		if(Emission(requete)!=1) {
+			printf("Erreur lors de l'émission du destinataire.\n");
+			return 1;
+		}
+
+		/*Réception de la réponse du serveur*/
+		message = Reception();	/*On stocke la reception dans la variable message*/
+		sscanf(message, "Reply/%d$*", &rep);	/*On extrait le paramètre de la reponse reçu,
+		qui correspond à l'état de reception du mail*/
+		//free(message);	/*Libération de la mémoire*/
+		if(rep == 101){
+			printf("\n");
+			printf("Votre message a été envoyé.\n");
+			printf("\n");
+			printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
+			return 0;
+		} else {
 			printf("\n");
 			printf("Erreur inconnue.\n");
 			printf("\n");
 			printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 			return 1;
+		}
 	}
-
-
-	printf("\n");
-	printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 	return 0;	/*La fonction retourne 0 si elle s'execute correctement*/
 }
 
