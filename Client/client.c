@@ -636,8 +636,9 @@ int Send(){
 																				le nombre de message dans la variable "num_message"*/
 	mail_destinataire[strlen(mail_destinataire)-1] = '\0'; /*Suppression du "\n" à la fin*/
 
+
 	/*Concatenation des différents éléments*/
-	sprintf(requete, "Mail/%s$*\n", mail_destinataire);	/*On concatene le nombre de message avec la requête
+	sprintf(requete, "Send/%s$*\n", mail_destinataire);	/*On concatene le nombre de message avec la requête
 																											pour avoir la syntaxe "Mail/identifiant$*"*/
 
 	/*Test de l'émission de l'envoie de la requete*/
@@ -648,6 +649,18 @@ int Send(){
 
 	printf("\n");	/*Retour à la ligne pour un affichage plus clair*/
 
+	/*Réception de la réponse du serveur*/
+	message = Reception();	/*On stocke la reception dans la variable message*/
+	sscanf(message, "Reply/%d$*", &rep);	/*On extrait le paramètre de la reponse reçu,
+																			qui correspond à l'état de reception du mail*/
+	if (rep == 303){
+		printf("\n");
+		printf("Destinataire incorrecte, veuillez renseignez un destinataire existant.\n");
+		printf("\n");
+		printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
+		return 1;
+	}
+
 	/*Récupération de l'objet du message à envoyer*/
 	printf("Veuillez rentrer l'objet de votre mail :\n");
 	fgets(mail_objet, 100, stdin);	/*On récupère la saisie du clavier qui est le nombre de
@@ -655,7 +668,7 @@ int Send(){
 	mail_objet[strlen(mail_objet)-1] = '\0'; /*Suppression du "\n" à la fin*/
 
 	/*Concatenation des différents éléments*/
-	sprintf(requete, "Mail/%s$*\n", mail_objet);	/*On concatene le nombre de message avec la requête
+	sprintf(requete, "Send/%s$*\n", mail_objet);	/*On concatene le nombre de message avec la requête
 																									pour avoir la syntaxe "Mail/objet$*"*/
 
 	/*Test de l'émission de l'envoie de la requete*/
@@ -685,7 +698,7 @@ int Send(){
 	}
 
 	/*Concatenation des différents éléments*/
-	sprintf(requete, "Mail/%s$*\n", mail_contenu);	/*On concatene le nombre de message avec la requête
+	sprintf(requete, "Send/%s$*\n", mail_contenu);	/*On concatene le nombre de message avec la requête
 																									pour avoir la syntaxe "Mail/contenu$*"*/
 
 	/*Test de l'émission de l'envoie de la requete*/
@@ -696,21 +709,14 @@ int Send(){
 
 	/*Réception de la réponse du serveur*/
 	message = Reception();	/*On stocke la reception dans la variable message*/
-	sscanf(message,"Reply/%d$*",&rep);	/*On extrait le paramètre de la reponse reçu,
+	sscanf(message, "Reply/%d$*", &rep);	/*On extrait le paramètre de la reponse reçu,
 																			qui correspond à l'état de reception du mail*/
-	free(message);	/*Libération de la mémoire*/
+	//free(message);	/*Libération de la mémoire*/
 	if(rep == 101){
 		printf("\n");
 		printf("Votre message a été envoyé.\n");
 		return 0;
 	} else {
-		if (rep == 303){
-			printf("\n");
-			printf("Utilisateur incorrecte, veuillez renseignez un destinataire existant.\n");
-			printf("\n");
-			printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
-			return 1;
-		} else {
 			printf("\n");
 			printf("Erreur inconnue.\n");
 			printf("\n");
