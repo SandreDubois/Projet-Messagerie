@@ -361,7 +361,7 @@ int Consult(){
 
 	/*Envoie de la requête "Consult$*" pour demander la boite de reception*/
 	/*Test de l'émission de l'envoie de la requete*/
-	if(Emission("Consult$*\n")!=1) {
+	if(Emission("Consult/$*\n")!=1) {
 		printf("Erreur d'emission lors de l'envoie de Consult.\n");	/*Affichage message d'erreur*/
 		return 1;
 	}
@@ -396,7 +396,7 @@ int Consult(){
 				printf("Expéditeur : %s\n", mail_expediteur);
 				printf("Objet : %s\n", mail_objet);
 			}
-		} while (strcmp(message, fin_consult); /*On refait cette boucle tant qu'on ne reçoit pas la chaine "Reply/606$*"*/
+		} while (strcmp(message, fin_consult)); /*On refait cette boucle tant qu'on ne reçoit pas la chaine "Reply/606$*"*/
 	}
 	printf("\n");
 	printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
@@ -717,8 +717,8 @@ int Send(){
 /*______________________________Fonction nombres de messages_________________________________*/
 int Inbox(){
 	/*Déclaration des variables*/
-	char *message = calloc(50, sizeof (char));
-	int num; /*Permet de stocker le nombre de message*/
+	char *message = (char *) calloc(50, sizeof (char));
+	int num = 0; /*Permet de stocker le nombre de message*/
 
 	/*En-tête menu nombre de message*/
 	printf("***************************** MENU ****************************\n");
@@ -734,29 +734,35 @@ int Inbox(){
 
 	/*Envoie de la requête "Inbox$*" pour demander le nombre de message sur le serveur*/
 	/*Test de l'émission de l'envoie de la requete*/
-	if(Emission("Inbox$*\n")!=1) {
+	if(Emission("Inbox/$*\n")!=1) {
 		printf("Erreur d'emission lors de l'envoie de Inbox.\n");	/*Affichage message d'erreur*/
 		return 1;
 	}
 
 	/*Réception de la réponse du serveur*/
+	bzero(message, 50);
 	message = Reception();	/*On stocke la reception dans la variable message*/
-	sscanf(message,"Number/%d$*",&num);	/*On extrait le paramètre de la reponse reçu,
-																			qui correspond au nombre de messages*/
-	free(message);	/*Libération de la mémoire*/
+	sscanf(message,"Number/%d$*",&num); /*On extrait le paramètre de la reponse reçu,
+																								qui correspond au nombre de messages*/
+
 
 	/*Test si il y a des messages présents sur le serveur*/
-	if(num != 0) {
-		printf("Vous avez %s messages.\n", num); /*Si l'utilisateur a des messages,
-																						son nombre de message est affiché*/
-		printf("\n");
-		printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
-	} else {
-		printf("Vous n'avez pas de messages.\n");	/*Si il n'a pas de message présent sur le serveur,
+	if(num == 0) {
+		printf("Vous n'avez pas de messages dans votre boite de reception.\n");	/*Si il n'a pas de message présent sur le serveur,
 																							l'utilisateur est averti*/
 		printf("\n");
 		printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 		return 1;
+	} else if (num == 1) {
+			printf("Vous avez %d message dans votre boite de reception.\n", num); /*Si l'utilisateur a des messages,
+																							son nombre de message est affiché*/
+			printf("\n");
+			printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
+	} else {
+		printf("Vous avez %d messages dans votre boite de reception.\n", num); /*Si l'utilisateur a des messages,
+																						son nombre de message est affiché*/
+		printf("\n");
+		printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 	}
 	return 0;	/*La fonction retourne 0 si elle s'execute correctement*/
 }
