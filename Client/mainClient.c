@@ -39,7 +39,10 @@ int main() {
 			case 1:
 				/*Connexion au serveur*/
 				retourAuthentification = Authentification();
-				break;
+				if (RetourMenuPrecedent_2() == 0){ /*Une fois la fonction est fini correctement,
+																				 on execute la fonction RetourMenuPrincipal*/
+					break;
+				}
 
 			case 2:
 				/*Deconnexion*/
@@ -75,7 +78,7 @@ int main() {
 				case 1:
 					/*Appel de la fonction Lecture d'un mail*/
 					retourConsult = Consult();
-					if (RetourMenuPrincipal() == 0){ /*Une fois la fonction est fini correctement,
+					if (RetourMenuPrecedent() == 0){ /*Une fois la fonction est fini correctement,
 																					 on execute la fonction RetourMenuPrincipal*/
 						break;
 					}
@@ -83,7 +86,7 @@ int main() {
 				case 2:
 					/*Appel de la fonction Lecture d'un mail*/
 					retourRead = Read();
-					if (RetourMenuPrincipal() == 0){ /*Une fois la fonction est fini correctement,
+					if (RetourMenuPrecedent() == 0){ /*Une fois la fonction est fini correctement,
 																					 on execute la fonction RetourMenuPrincipal*/
 						break;
 					}
@@ -91,7 +94,7 @@ int main() {
 				case 3:
 					/*Appel de la fonction Suppression d'un message*/
 					retourDelete = Delete();
-					if (RetourMenuPrincipal() == 0){	/*Une fois la fonction est fini correctement,
+					if (RetourMenuPrecedent() == 0){	/*Une fois la fonction est fini correctement,
 																					 on execute la fonction RetourMenuPrincipal*/
 						break;
 					}
@@ -99,7 +102,7 @@ int main() {
 				case 4:
 					/*Appel de la fonction Ecriture d'un message*/
 					retourSend = Send();
-					if (RetourMenuPrincipal() == 0){	/*Une fois la fonction est fini correctement,
+					if (RetourMenuPrecedent() == 0){	/*Une fois la fonction est fini correctement,
 																					 on execute la fonction RetourMenuPrincipal*/
 						break;
 					}
@@ -107,7 +110,7 @@ int main() {
 				case 5:
 					/*Appel de la fonction Nombre de messages*/
 					retourInbox = Inbox();
-					if (RetourMenuPrincipal() == 0){	/*Une fois la fonction est fini correctement,
+					if (RetourMenuPrecedent() == 0){	/*Une fois la fonction est fini correctement,
 																					 on execute la fonction RetourMenuPrincipal*/
 						break;
 					}

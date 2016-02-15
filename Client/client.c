@@ -199,9 +199,18 @@ void FreeBuffer(){
 }
 
 /*Fonction pour revenir au menu principal avec "Entrée" et rester dans la fonction en attendant*/
-int RetourMenuPrincipal(){
+int RetourMenuPrecedent(){
 	char c;
 	FreeBuffer();
+	scanf("%c", &c);
+	if (c == '\n'){
+		return 0;
+	}
+	return 1;
+}
+
+int RetourMenuPrecedent_2(){
+	char c;
 	scanf("%c", &c);
 	if (c == '\n'){
 		return 0;
@@ -236,8 +245,8 @@ int Authentification(){
 	char *message = calloc(50, sizeof (char));
 	int rep;	/*Permet de stocker le type de réponse du serveur*/
 	char adresse_client[30];	/*Permet de stocker l'adresse mail du client dans un tableau de 30 caractères'*/
-	char mdp_client[20];	/*Permet de stocker le mot de passe du client dans un tableau de 20 caractères'*/
-	char requete[5000];	/*Permet de stocker la requête complete concatené dans un tableau de 5000 caractères'*/
+	char mdp_client[30];	/*Permet de stocker le mot de passe du client dans un tableau de 20 caractères'*/
+	char requete[80];	/*Permet de stocker la requête complete concatené dans un tableau de 80 caractères'*/
 
 	/*En-tête menu authentification*/
 	printf("***************************** MENU ****************************\n");
@@ -292,13 +301,16 @@ int Authentification(){
 	} else {
 		if (rep == 202){	/*Si on reçoit un "Reply/202$*", alors authentification échec*/
 			printf("\n");
-			printf("Erreur d'authentification, votre adresse mail et le mot de passe ne correspondent pas.\n");
-			system("sleep 3");
+			printf("Erreur  lors de l'authentification.\n");
+			printf("Votre adresse mail et le mot de passe ne correspondent pas.\n");
+			printf("\n");
+			printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 			return 1;
 		} else { /*Sinon erreur inconnue*/
 			printf("\n");
 			printf("Erreur inconnue.\n");	/*Affichage message d'erreur*/
-			system("sleep 3");
+			printf("\n");
+			printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 			return 1;
 		}
 		free(message); /*Libération de la mémoire*/
@@ -338,12 +350,10 @@ int Choix(){
 /*_________________________Consultation de la boite de reception_______________________________*/
 int Consult(){
 	/*Déclaration des variables*/
-	char *message = calloc(50, sizeof (char));
+	char *message = calloc(200, sizeof (char));
 	char *mail_numero = NULL; /*Permet de stocker le numéro du mail envoyé par le serveur*/
 	char *mail_expediteur = NULL; /*Permet de stocker l'expéditeur du mail envoyé par le serveur*/
 	char *mail_objet = NULL; /*Permet de stocker l'objet du  mail envoyé par le serveur*/
-	char num_message[3]; /*Permet de stocker le numéro du message dans un tableaude 3 caractère*/
-	char requete[5000];	/*Permet de stocker la requête complete concatené dans un tableau de 5000 caractères'*/
 	char *fin_consult = "Reply/606$*"; /*Permettra la comparaison avec la réponse du serveur*/
 	int rep;	/*Permet de stocker le type de réponse du serveur*/
 
@@ -380,15 +390,15 @@ int Consult(){
 			} else { /*Sinon cela sera les en-têtes des mails que l'on récupère et affiche*/
 				sscanf(message,"Content/%s$*",&mail_numero);	/*On extrait le paramètre de la reponse reçu,
 																											qui correspond au numéro du mail*/
-				free(message);	/*Libération de la mémoire*/
+				//free(message);	/*Libération de la mémoire*/
 				message = Reception();
 				sscanf(message,"Content/%s$*",&mail_expediteur);	/*On extrait le paramètre de la reponse reçu,
 																													qui correspond à l"expéditeur du mail*/
-				free(message);	/*Libération de la mémoire*/
+				//free(message);	/*Libération de la mémoire*/
 				message = Reception();
 				sscanf(message,"Content/%s$*",&mail_objet);	/*On extrait le paramètre de la reponse reçu,
 																										qui correspond à l'objet du mail*/
-				free(message);	/*Libération de la mémoire*/
+				//free(message);	/*Libération de la mémoire*/
 
 				/*Affichage de l'en-tête du mail*/
 				printf("\n");
@@ -406,13 +416,13 @@ int Consult(){
 /*__________________________________Lecture d'un messages______________________________________*/
 int Read(){
 	/*Déclaration des variables*/
-	char *message = calloc(50, sizeof (char));
+	char *message = calloc(5000, sizeof (char));
 	char *mail_numero = NULL; /*Permet de stocker le numéro du mail envoyé par le serveur*/
 	char *mail_expediteur = NULL; /*Permet de stocker l'expéditeur du mail envoyé par le serveur*/
 	char *mail_objet = NULL; /*Permet de stocker l'objet du  mail envoyé par le serveur*/
 	char *mail_contenu = NULL; /*Permet de stocker le contenu mail envoyé par le serveur*/
 	int num_message; /*Permet de stocker le numéro du message*/
-	char requete[5000];	/*Permet de stocker la requête complete concatené dans un tableau de 5000 caractères'*/
+	char requete[20];	/*Permet de stocker la requête complete concatené dans un tableau de 80 caractères'*/
 	char remplacement = '\n'; /*Permet de stocker un caractère pour remplacer les "#" contenu dans le contenu du mail*/
 	int i = 0; /*Variable utilisée pour la boucle permettant de parcourir le contenu du mail*/
 	int rep;	/*Permet de stocker le type de réponse du serveur*/
@@ -456,21 +466,21 @@ int Read(){
 	message = Reception();	/*On stocke la reception dans la variable message*/
 	sscanf(message,"Reply/%d$*",&rep);	/*On extrait le paramètre de la reponse reçu,
 																			qui correspond à l'état de la lecture du mail*/
-	free(message);	/*Libération de la mémoire*/
+	//free(message);	/*Libération de la mémoire*/
 	if(rep == 101){
 		/*Reception des différents élements du mail*/
 		message = Reception();
 		sscanf(message,"Mail/%s$*",&mail_numero);	/*On extrait le paramètre de la reponse reçu, qui correspond au numéro du mail*/
-		free(message);	/*Libération de la mémoire*/
+		// free(message);	/*Libération de la mémoire*/
 		message = Reception();
 		sscanf(message,"Mail/%s$*",&mail_expediteur);	/*On extrait le paramètre de la reponse reçu, qui correspond à l"expéditeur du mail*/
-		free(message);	/*Libération de la mémoire*/
+		// free(message);	/*Libération de la mémoire*/
 		message = Reception();
 		sscanf(message,"Mail/%s$*",&mail_objet);	/*On extrait le paramètre de la reponse reçu, qui correspond à l'objet du mail*/
-		free(message);	/*Libération de la mémoire*/
+		// free(message);	/*Libération de la mémoire*/
 		message = Reception();
 		sscanf(message,"Mail/%s$*",&mail_contenu);	/*On extrait le paramètre de la reponse reçu, qui correspond au contenu du mail*/
-		free(message);	/*Libération de la mémoire*/
+		// free(message);	/*Libération de la mémoire*/
 		printf("\n");
 
 		/*Boucle de transparence pour transformer les "#" en "\n", opération inverse à faire coté reception*/
@@ -515,7 +525,7 @@ int Delete(){
 	/*Déclaration des variables*/
 	char *message = calloc(50, sizeof (char));
 	int num_message;	/*Permet de stocker le numéro du message*/
-	char requete[5000];	/*Permet de stocker la requête complete concatené dans un tableau de 5000 caractères'*/
+	char requete[20];	/*Permet de stocker la requête complete concatené dans un tableau de 5000 caractères'*/
 	char confirmation; /*Permet de stocker la confirmation de suppression de l'Utilisateur*/
 	int rep = 0;	/*Permet de stocker le type de réponse du serveur*/
 
@@ -568,7 +578,7 @@ int Delete(){
 	message = Reception();	/*On stocke la reception dans la variable message*/
 	sscanf(message,"Reply/%d$*",&rep);	/*On extrait le paramètre de la reponse reçu,
 																			qui correspond à l'état de la suppression du mail*/
-	free(message);	/*Libération de la mémoire*/
+	// free(message);	/*Libération de la mémoire*/
 	if(rep == 101){
 		printf("Votre message a bien été supprimé.\n");
 		printf("\n");
@@ -601,7 +611,7 @@ int Send(){
 																										pour l'envoyer au serveur, alloue 5000 cases mémoire
 																										initialisées avec '\0' pour éviter des problèmes de
 																										buffer et segmentation*/
-	char requete[5000];	/*Permet de stocker la requête complete concatené dans un tableau de 5000 caractères'*/
+	char requete[5010];	/*Permet de stocker la requête complete concatené dans un tableau de 5010 caractères'*/
 	int rep;	/*Permet de stocker le type de réponse du serveur*/
 	char remplacement = '#'; /*Permet de stocker un caractère pour remplacer les "\n" contenu dans le contenu du mail*/
 	int i = 0; /*Variable pour la boucle do while pour le contenu du mail

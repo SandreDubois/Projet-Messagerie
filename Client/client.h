@@ -46,7 +46,8 @@ void Terminaison();
 void FreeBuffer();
 
 /*Fonction pour revenir au menu principal*/
-int RetourMenuPrincipal();
+int RetourMenuPrecedent();
+int RetourMenuPrecedent_2();
 
 /*Fonction pour récupérer le choix du menu de l'utilisateur*/
 int Choix();
