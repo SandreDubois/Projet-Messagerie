@@ -296,8 +296,8 @@ int Authentification(){
 
 	/*Exploitation de la réponse du serveur*/
 	if(rep == 101){	/*Si on reçoit un "Reply/101$*", alors authentification correcte*/
+		printf("\n");
 		printf("Authentification Réussie.\n");	/*Affichage message d'erreur*/
-		return 0;
 	} else {
 		if (rep == 202){	/*Si on reçoit un "Reply/202$*", alors authentification échec*/
 			printf("\n");
@@ -722,8 +722,8 @@ int Send(){
 			printf("\n");
 			printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 			return 1;
-		}
 	}
+
 
 	printf("\n");
 	printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");

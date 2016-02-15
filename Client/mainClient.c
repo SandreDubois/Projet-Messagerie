@@ -39,10 +39,7 @@ int main() {
 			case 1:
 				/*Connexion au serveur*/
 				retourAuthentification = Authentification();
-				if (RetourMenuPrecedent_2() == 0){ /*Une fois la fonction est fini correctement,
-																				 on execute la fonction RetourMenuPrincipal*/
-					break;
-				}
+				break;
 
 			case 2:
 				/*Deconnexion*/
