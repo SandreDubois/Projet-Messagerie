@@ -49,6 +49,9 @@ void FreeBuffer();
 int RetourMenuPrecedent();
 int RetourMenuPrecedent_2();
 
+/*Fonction pour l'extraction de chaine de caractère en paramètre*/
+int extraction(int lg_chaine, char *source, char *destination, char condition);
+
 /*Fonction pour récupérer le choix du menu de l'utilisateur*/
 int Choix();
 
@@ -62,7 +65,7 @@ int Authentification();
 void Menu_Principal();
 
 /*Fonction pour récupérer et afficher la liste des messages*/
-int Consult();
+int Consult(int nombre_message_boite_mail);
 
 /*Fonction de lecture d'un mail*/
 int Read();
@@ -75,6 +78,7 @@ int Send();
 
 /*Fonction pour récupérer le nombre de message*/
 int Inbox();
+int Inbox_spy();
 
 /* Ferme la connexion.*/
 int Deconnexion();

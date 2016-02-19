@@ -23,6 +23,7 @@ int main() {
 	int retourConsult = 1; /*Contiendra le retour de la fonction Consult*/
 	int retourDelete = 1;	/*Contiendra le retour de la fonction Delete*/
 	int retourInbox = 1;	/*Contiendra le retour de la fonction Inbox*/
+	int retourInbox_spy = 1;
 	int retourRead = 1;	/*Contiendra le retour de la fonction Read*/
 	int retourSend = 1;	/*Contiendra le retour de la fonction Send*/
 
@@ -53,6 +54,8 @@ int main() {
 			default : /*Si choix n'est ni 1, ni 2, affiche un message d'erreur et recommence
 								la boucle*/
 				printf("Veuillez renseignez un choix valide.\n");
+				FreeBuffer();
+				system("sleep 3");
 		}
 		system("clear");
 		printf("Chargement en cours, veuillez patientez.\n");
@@ -74,7 +77,9 @@ int main() {
 			switch (choix) {
 				case 1:
 					/*Appel de la fonction Lecture d'un mail*/
-					retourConsult = Consult();
+					retourInbox = 0;
+					retourInbox_spy = Inbox_spy();
+					retourConsult = Consult(retourInbox_spy);
 					if (RetourMenuPrecedent() == 0){ /*Une fois la fonction est fini correctement,
 																					 on execute la fonction RetourMenuPrincipal*/
 						break;
@@ -99,7 +104,7 @@ int main() {
 				case 4:
 					/*Appel de la fonction Ecriture d'un message*/
 					retourSend = Send();
-					if (RetourMenuPrecedent() == 0){	/*Une fois la fonction est fini correctement,
+					if (RetourMenuPrecedent_2() == 0){	/*Une fois la fonction est fini correctement,
 																					 on execute la fonction RetourMenuPrincipal*/
 						break;
 					}
@@ -124,6 +129,8 @@ int main() {
 				default:	/*Si choix différent de ceux-ci dessus, affiche un message d'erreur et recommence
 									la boucle*/
 					printf("Veuillez renseignez un choix valide.\n");
+					FreeBuffer();
+					system("sleep 3");
 			}
 			system("clear");
 			printf("Chargement en cours, veuillez patientez.\n");

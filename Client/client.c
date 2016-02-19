@@ -11,6 +11,14 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <errno.h>
+#define RED      "\033[1;31m"
+#define GREEN    "\033[1;32m"
+#define YELLOW   "\033[1;33m"
+#define BLUE     "\033[1;34m"
+#define PURPLE   "\033[1;35m"
+#define CYAN     "\033[1;36m"
+#define GREY     "\033[1;37m"
+#define DEFAULT_COLOR "\033[0;m"
 
 #include "client.h"
 
@@ -121,7 +129,7 @@ char *Reception() {
  * Attention, le message doit etre termine par \n
  */
 int Emission(char *message) {
-	if(strstr(message, "$*") == NULL) {
+	if(strstr(message, "$*\n") == NULL) {
 		fprintf(stderr, "Emission, Le message n'est pas termine par $*.\n");
 	}
 	int taille = strlen(message);
@@ -218,21 +226,51 @@ int RetourMenuPrecedent_2(){
 	return 1;
 }
 
+/*-----------------------Extraction des paramètres----------------------------*/
+
+
+//Fonction d'extraction des sous chaines (utilisée pour extraire les paramètres)
+// exemple : a = extraction(30,p,login,'/');
+
+int extraction(int lg_chaine, char *source, char *destination, char condition){
+
+	int i = 0;
+
+	if (!lg_chaine){
+		printf("[Extraction] Erreur longueur chaine\n");
+		return -1;
+	} 		//à commenter
+
+//J'extrais le paramètre courant tant que je n'ai pas de caractère condition et
+//et que la chaine respecte la taille imposée
+	while((source[i] != condition) && (i<lg_chaine)){
+		if (source[i] == condition)
+			break;
+		else
+			destination[i] = source[i];
+		i++;
+	}
+	destination[i] = '\0';
+	//printf("extraction: %s",destination);
+	source++;		//on se place après le '/' à la fin de l'extraction
+	return 0;
+}
+
 /*______________________________Affichage menu connexion_______________________________________*/
 void Menu_Authentification(){
-	printf("***************************** MENU ****************************\n");
+	printf("***************************** %sMENU%s ****************************\n", GREEN, DEFAULT_COLOR);
 	printf("*                                                             *\n");
-	printf("*                        TMP Messagerie                       *\n");
+	printf("*                        %sTMP Messagerie%s                       *\n", BLUE, DEFAULT_COLOR);
 	printf("*                                                             *\n");
-	printf("*                    Menu d'Authentification                  *\n");
+	printf("*                    %sMenu d'Authentification%s                  *\n", GREEN, DEFAULT_COLOR);
 	printf("*                                                             *\n");
 	printf("*                                                             *\n");
 	printf("***************************************************************\n");	/*Affichage Menu_Authentification*/
-  printf("*************** 1 - Pour vous authentifier ********************\n");
-  printf("*************** 2 - Pour vous déconnecter  ********************\n");
+  printf("*************** %s1 - Pour vous authentifier %s********************\n", YELLOW, DEFAULT_COLOR);
+  printf("*************** %s2 - Pour vous déconnecter  %s********************\n", YELLOW, DEFAULT_COLOR);
 	printf("***************************************************************\n");
 	printf("*                                                             *\n");
-	printf("* Projet de Frederic FERRERA, Saidaran SARMA et Sandre DUBOIS *\n");
+	printf("* %sProjet de Frederic FERRERA, Saidaran SARMA et Sandre DUBOIS%s *\n", BLUE, DEFAULT_COLOR);
 	printf("*                                                             *\n");
 	printf("***************************************************************\n");
 	printf("*** Copyright FFSSSD ************************** Version 1.0 ***\n");
@@ -249,11 +287,11 @@ int Authentification(){
 	char requete[80];	/*Permet de stocker la requête complete concatené dans un tableau de 80 caractères'*/
 
 	/*En-tête menu authentification*/
-	printf("***************************** MENU ****************************\n");
+	printf("***************************** %sMENU%s ****************************\n", GREEN, DEFAULT_COLOR);
 	printf("*                                                             *\n");
-	printf("*                          Messagerie                         *\n");
+	printf("*                        %sTMP Messagerie%s                       *\n", BLUE, DEFAULT_COLOR);
 	printf("*                                                             *\n");
-	printf("*                    Menu d'Authentification                  *\n");
+	printf("*                    %sMenu d'Authentification%s                  *\n", GREEN, DEFAULT_COLOR);
 	printf("*                                                             *\n");
 	printf("*                                                             *\n");
 	printf("***************************************************************\n");
@@ -301,42 +339,51 @@ int Authentification(){
 	} else {
 		if (rep == 202){	/*Si on reçoit un "Reply/202$*", alors authentification échec*/
 			printf("\n");
-			printf("Erreur  lors de l'authentification.\n");
+			printf("Erreur lors de l'authentification.\n");
 			printf("Votre adresse mail et le mot de passe ne correspondent pas.\n");
-			system("sleep 3");
-			// printf("\n");
-			// printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
+			printf("Retour au menu precedent, veuillez patienter.\n");
+			system("sleep 5");
+			free(message);
+			// bzero(adresse_client, 30);
+			// bzero(mdp_client, 30);
+			// bzero(requete, 80);
 			return 1;
 		} else { /*Sinon erreur inconnue*/
 			printf("\n");
 			printf("Erreur inconnue.\n");	/*Affichage message d'erreur*/
-			system("sleep 3");
-			// printf("\n");
-			// printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
+			printf("Retour au menu precedent, veuillez patienter.\n");
+			system("sleep 5");
+			free(message);
+			// bzero(adresse_client, 30);
+			// bzero(mdp_client, 30);
+			// bzero(requete, 80);
 			return 1;
 		}
-		free(message); /*Libération de la mémoire*/
 	}
+	free(message);
+	// bzero(adresse_client, 30);
+	// bzero(mdp_client, 30);
+	// bzero(requete, 80);
 	return 0;	/*La fonction retourne 0 si elle s'execute correctement*/
 }
 
 
 /*________________________________Affichage menu principal______________________________________*/
 void Menu_Principal(){
-	printf("***************************** MENU ****************************\n");
+	printf("***************************** %sMENU%s ****************************\n", GREEN, DEFAULT_COLOR);
 	printf("*                                                             *\n");
-	printf("*                        TMP Messagerie                       *\n");
+	printf("*                        %sTMP Messagerie%s                       *\n", BLUE, DEFAULT_COLOR);
 	printf("*                                                             *\n");
-	printf("*                        Menu Principal                       *\n");
+	printf("*                        %sMenu Principal%s                       *\n", GREEN, DEFAULT_COLOR);
 	printf("*                                                             *\n");
 	printf("*                                                             *\n");
 	printf("***************************************************************\n");	/*Affichage Menu_Principal*/
-	printf("************ 1 - Consulter votre boite mail        ************\n");
-  printf("************ 2 - Pour lire un mail                 ************\n");
-	printf("************ 3 - Pour supprimer un mail            ************\n");
-	printf("************ 4 - Pour envoyer un mail              ************\n");
-	printf("************ 5 - Pour obtenir le nombre de message ************\n");
-	printf("************ 6 - Pour vous déconnecter             ************\n");
+	printf("************ %s1 - Consulter votre boite mail        %s************\n", YELLOW, DEFAULT_COLOR);
+  printf("************ %s2 - Pour lire un mail                 %s************\n", YELLOW, DEFAULT_COLOR);
+	printf("************ %s3 - Pour supprimer un mail            %s************\n", YELLOW, DEFAULT_COLOR);
+	printf("************ %s4 - Pour envoyer un mail              %s************\n", YELLOW, DEFAULT_COLOR);
+	printf("************ %s5 - Pour obtenir le nombre de message %s************\n", YELLOW, DEFAULT_COLOR);
+	printf("************ %s6 - Pour vous déconnecter             %s************\n", YELLOW, DEFAULT_COLOR);
 	printf("***************************************************************\n");
 	printf("*** Copyright FFSSSD ************************** Version 1.0 ***\n");
 	printf("\n");
@@ -345,26 +392,32 @@ void Menu_Principal(){
 /*_________________Récupération du choix de l'utilisateur pour les menus_______________________*/
 int Choix(){
 	int choix;
-	scanf("%d", &choix);
-	return choix;	/*La fonction retourne "choix" si elle s'execute correctement*/
+	if (scanf("%1d", &choix) != 1){
+		//printf("erreur ce n'est pas un entier");
+		return -1;	/*Retourne 8 si ce n'est pas un entier*/
+	}else{
+		return choix; /*Retourne choix si scanf OK*/
+	}
 }
 
 /*_________________________Consultation de la boite de reception_______________________________*/
-int Consult(){
+int Consult(int nombre_message_boite_mail){
 	/*Déclaration des variables*/
-	char *message = calloc(200, sizeof (char));
-	char *mail_numero = NULL; /*Permet de stocker le numéro du mail envoyé par le serveur*/
-	char *mail_expediteur = NULL; /*Permet de stocker l'expéditeur du mail envoyé par le serveur*/
-	char *mail_objet = NULL; /*Permet de stocker l'objet du  mail envoyé par le serveur*/
-	char *fin_consult = "Reply/606$*"; /*Permettra la comparaison avec la réponse du serveur*/
+	char *message = NULL;
+	char *mail_numero = (char *) calloc(3, sizeof (char));; /*Permet de stocker le numéro du mail envoyé par le serveur*/
+	char *mail_expediteur = (char *) calloc(30, sizeof (char));; /*Permet de stocker l'expéditeur du mail envoyé par le serveur*/
+	char *mail_objet = (char *) calloc(30, sizeof (char));; /*Permet de stocker l'objet du  mail envoyé par le serveur*/
+	char *p = (char *) calloc(4000,sizeof(char));
 	int rep;	/*Permet de stocker le type de réponse du serveur*/
+	int resultat; /*Permet de stocker le resultat de l'extraction*/
+	int i = 0; /*Compteur pour le while*/
 
 	/*En-tête menu Suppression message*/
-	printf("***************************** MENU ****************************\n");
+	printf("***************************** %sMENU%s ****************************\n", GREEN, DEFAULT_COLOR);
 	printf("*                                                             *\n");
-	printf("*                        TMP Messagerie                       *\n");
+	printf("*                        %sTMP Messagerie%s                       *\n", BLUE, DEFAULT_COLOR);
 	printf("*                                                             *\n");
-	printf("*              Consultation de la boite de reception          *\n");
+	printf("*              %sConsultation de la boite de reception          %s*\n", GREEN, DEFAULT_COLOR);
 	printf("*                                                             *\n");
 	printf("*                                                             *\n");
 	printf("***************************************************************\n");
@@ -378,38 +431,50 @@ int Consult(){
 		return 1;
 	}
 
-	/*Réception de la réponse du serveur*/
-	message = Reception();	/*On stocke la reception dans la variable message*/
-	sscanf(message,"Reply/%d$*",&rep);	/*On extrait le paramètre de la reponse reçu,
-																			qui correspond à l'état de la lecture du mail*/
-	if(rep == 101){ /*Si on reçoit un "Reply/101$*", on rentre dans le if*/
-		/*Reception des différents élements du mail*/
-		do{
-			message = Reception();
-			if (!strcmp(message, fin_consult)){ /*Si le premier message correspond à "Reply/606$*",
-																		 la fonction retourne 0*/
-				return 0;
-			} else { /*Sinon cela sera les en-têtes des mails que l'on récupère et affiche*/
-				sscanf(message,"Content/%s$*",&mail_numero);	/*On extrait le paramètre de la reponse reçu,
-																											qui correspond au numéro du mail*/
-				//free(message);	/*Libération de la mémoire*/
-				message = Reception();
-				sscanf(message,"Content/%s$*",&mail_expediteur);	/*On extrait le paramètre de la reponse reçu,
-																													qui correspond à l"expéditeur du mail*/
-				//free(message);	/*Libération de la mémoire*/
-				message = Reception();
-				sscanf(message,"Content/%s$*",&mail_objet);	/*On extrait le paramètre de la reponse reçu,
-																										qui correspond à l'objet du mail*/
-				//free(message);	/*Libération de la mémoire*/
+	do {
+		message = Reception();
+		p = strstr(message,"/");	//lecture de la sous chaine jusqu'au premier '/'
+		p++;		//debut du 1er paramètre
+		//resultat est le retour de l'extraction
+		resultat = extraction(3, p, mail_numero, '$');
+		if (resultat < 0){
+			printf("L'extraction du destinataire a echoue\n");
+			free(mail_numero);
+			return -2;
+		}
 
-				/*Affichage de l'en-tête du mail*/
-				printf("\n");
-				printf("----------------------------Mail n°%s--------------------------\n", mail_numero);
-				printf("Expéditeur : %s\n", mail_expediteur);
-				printf("Objet : %s\n", mail_objet);
-			}
-		} while (strcmp(message, fin_consult)); /*On refait cette boucle tant qu'on ne reçoit pas la chaine "Reply/606$*"*/
-	}
+		message = Reception();
+		p = strstr(message,"/");	//lecture de la sous chaine jusqu'au premier '/'
+		p++;		//debut du 1er paramètre
+		//resultat est le retour de l'extraction
+		resultat = extraction(30, p, mail_expediteur, '$');
+		if (resultat < 0){
+			printf("L'extraction du destinataire a echoue\n");
+		free(mail_expediteur);
+			return -2;
+		}
+
+		message = Reception();
+		p = strstr(message,"/");	//lecture de la sous chaine jusqu'au premier '/'
+		p++;		//debut du 1er paramètre
+		//resultat est le retour de l'extraction
+		resultat = extraction(30, p, mail_objet, '$');
+		if (resultat < 0){
+			printf("L'extraction du destinataire a echoue\n");
+			free(mail_objet);
+			return -2;
+		}
+
+		/*Affichage de l'en-tête du mail*/
+		printf("\n");
+		printf("----------------------------%sMail n°%s%s--------------------------\n", GREY, mail_numero, DEFAULT_COLOR);
+		printf("%sExpéditeur :%s %s\n", GREY, DEFAULT_COLOR, mail_expediteur);
+		printf("%sObjet :%s %s\n", GREY, DEFAULT_COLOR, mail_objet);
+		i++;
+		free(message);
+		printf("Message : %s\n", message);
+	} while ( i != nombre_message_boite_mail );
+
 	printf("\n");
 	printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 	return 0;
@@ -418,23 +483,24 @@ int Consult(){
 /*__________________________________Lecture d'un messages______________________________________*/
 int Read(){
 	/*Déclaration des variables*/
-	char *message = calloc(5000, sizeof (char));
-	char *mail_numero = NULL; /*Permet de stocker le numéro du mail envoyé par le serveur*/
-	char *mail_expediteur = NULL; /*Permet de stocker l'expéditeur du mail envoyé par le serveur*/
-	char *mail_objet = NULL; /*Permet de stocker l'objet du  mail envoyé par le serveur*/
-	char *mail_contenu = NULL; /*Permet de stocker le contenu mail envoyé par le serveur*/
+	char *message = NULL;
+	char *mail_expediteur = (char *) calloc(30, sizeof(char)); /*Permet de stocker l'expéditeur du mail envoyé par le serveur*/
+	char *mail_objet = (char *) calloc(256, sizeof(char)); /*Permet de stocker l'objet du  mail envoyé par le serveur*/
+	char *mail_contenu = (char *) calloc(5000, sizeof(char)); /*Permet de stocker le contenu mail envoyé par le serveur*/
+	char *p = (char *) calloc(4000,sizeof(char));
 	int num_message; /*Permet de stocker le numéro du message*/
 	char requete[20];	/*Permet de stocker la requête complete concatené dans un tableau de 80 caractères'*/
 	char remplacement = '\n'; /*Permet de stocker un caractère pour remplacer les "#" contenu dans le contenu du mail*/
 	int i = 0; /*Variable utilisée pour la boucle permettant de parcourir le contenu du mail*/
-	int rep;	/*Permet de stocker le type de réponse du serveur*/
+	int resultat; /*Permet de stocker le resultat de l'extraction*/
+	int rep = 0;	/*Permet de stocker le type de réponse du serveur*/
 
 	/*En-tête menu Suppression message*/
-	printf("***************************** MENU ****************************\n");
+	printf("***************************** %sMENU%s ****************************\n", GREEN, DEFAULT_COLOR);
 	printf("*                                                             *\n");
-	printf("*                        TMP Messagerie                       *\n");
+	printf("*                        %sTMP Messagerie%s                       *\n", BLUE, DEFAULT_COLOR);
 	printf("*                                                             *\n");
-	printf("*                        Lecture Message                      *\n");
+	printf("*                        %sLecture Message%s                      *\n", GREEN, DEFAULT_COLOR);
 	printf("*                                                             *\n");
 	printf("*                                                             *\n");
 	printf("***************************************************************\n");
@@ -468,22 +534,45 @@ int Read(){
 	message = Reception();	/*On stocke la reception dans la variable message*/
 	sscanf(message,"Reply/%d$*",&rep);	/*On extrait le paramètre de la reponse reçu,
 																			qui correspond à l'état de la lecture du mail*/
-	//free(message);	/*Libération de la mémoire*/
+	printf("Reply : %s\n", message);
 	if(rep == 101){
-		/*Reception des différents élements du mail*/
 		message = Reception();
-		sscanf(message,"Mail/%s$*",&mail_numero);	/*On extrait le paramètre de la reponse reçu, qui correspond au numéro du mail*/
-		// free(message);	/*Libération de la mémoire*/
+		p = strstr(message,"/");	//lecture de la sous chaine jusqu'au premier '/'
+		p++;		//debut du 1er paramètre
+		//resultat est le retour de l'extraction
+		resultat = extraction(30, p, mail_expediteur, '$');
+		if (resultat < 0){
+			printf("L'extraction de l'expediteur a echoue\n");
+			free(mail_expediteur);
+			return -2;
+		}
+		// printf("Mail exp : %s\n", mail_expediteur);
+		// printf("Message : %s\n", message);
+
 		message = Reception();
-		sscanf(message,"Mail/%s$*",&mail_expediteur);	/*On extrait le paramètre de la reponse reçu, qui correspond à l"expéditeur du mail*/
-		// free(message);	/*Libération de la mémoire*/
+		p = strstr(message,"/");	//lecture de la sous chaine jusqu'au premier '/'
+		p++;		//debut du 1er paramètre
+		//resultat est le retour de l'extraction
+		resultat = extraction(256, p, mail_objet, '$');
+		if (resultat < 0){
+			printf("L'extraction de l'objet a echoue\n");
+			free(mail_objet);
+			return -2;
+		}
+		// printf("Mail obj : %s\n", mail_objet);
+		// printf("Message : %s\n", message);
+
 		message = Reception();
-		sscanf(message,"Mail/%s$*",&mail_objet);	/*On extrait le paramètre de la reponse reçu, qui correspond à l'objet du mail*/
-		// free(message);	/*Libération de la mémoire*/
-		message = Reception();
-		sscanf(message,"Mail/%s$*",&mail_contenu);	/*On extrait le paramètre de la reponse reçu, qui correspond au contenu du mail*/
-		// free(message);	/*Libération de la mémoire*/
-		printf("\n");
+		p = strstr(message,"/");	//lecture de la sous chaine jusqu'au premier '/'
+		p++;		//debut du 1er paramètre
+		//resultat est le retour de l'extraction
+		resultat = extraction(5000, p, mail_contenu, '$');
+		if (resultat < 0){
+			printf("L'extraction du contenu a echoue\n");
+			free(mail_contenu);
+			return -2;
+		}
+		//printf("Mail contenu : %s\n", mail_contenu);
 
 		/*Boucle de transparence pour transformer les "#" en "\n", opération inverse à faire coté reception*/
 		for(i=0 ; i < strlen(mail_contenu); i++){
@@ -491,16 +580,20 @@ int Read(){
 				mail_contenu[i] = remplacement;
 			}
 		}
+		mail_contenu[strlen(mail_contenu)-2] = 0;
 
 		/*Affichage des différents éléments du mail*/
 		printf("\n");
-		printf("Mail numéro : %s\n", mail_numero);
-		printf("Expéditeur : %s\n", mail_expediteur);
-		printf("Objet : %s\n", mail_objet);
-		printf("Contenu : %s\n");
+		printf("%sExpéditeur :%s %s\n", GREY, DEFAULT_COLOR, mail_expediteur);
+		printf("%sObjet :%s %s\n", GREY, DEFAULT_COLOR, mail_objet);
+		printf("%sContenu :%s \n", GREY, DEFAULT_COLOR);
 		printf("%s\n", mail_contenu);
 		printf("\n");
 		printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
+		free(message);
+		free(mail_expediteur);
+		free(mail_objet);
+		free(mail_contenu);
 		return 0;
 	} else {
 		/*Gestion d'erreur si c'est pas "Reply/101$*"*/
@@ -533,11 +626,11 @@ int Delete(){
 
 
 	/*En-tête menu Suppression message*/
-	printf("***************************** MENU ****************************\n");
+	printf("***************************** %sMENU%s ****************************\n", GREEN, DEFAULT_COLOR);
 	printf("*                                                             *\n");
-	printf("*                        TMP Messagerie                       *\n");
+	printf("*                        %sTMP Messagerie%s                       *\n", BLUE, DEFAULT_COLOR);
 	printf("*                                                             *\n");
-	printf("*                        Suppression mail                     *\n");
+	printf("*                        %sSuppression mail%s                     *\n", GREEN, DEFAULT_COLOR);
 	printf("*                                                             *\n");
 	printf("*                                                             *\n");
 	printf("***************************************************************\n");
@@ -557,7 +650,7 @@ int Delete(){
 		}
 
 		printf("\n");
-		printf("Etes-vous sûr de bien vouloir supprimer le mail n°%d ? (Y/n)\n", num_message); /*On demande
+		printf("%sEtes-vous sûr de bien vouloir supprimer le mail n°%d ? (Y/n)%s\n", RED, num_message, DEFAULT_COLOR); /*On demande
 																																													confirmation
 																																													pour la suppression
 																																													du mail*/
@@ -585,20 +678,24 @@ int Delete(){
 		printf("Votre message a bien été supprimé.\n");
 		printf("\n");
 		printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
+		free(message);
 		return 0;
 	} else {
 		if (rep == 505){
 			printf("Erreur lors de la suppression, le message n'a pas pu etre effacé.\n");
 			printf("\n");
 			printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
+			free(message);
 			return 1;
 		} else {
 			printf("Erreur inconnue.\n");
 			printf("\n");
 			printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
+			free(message);
 			return 1;
 		}
 	}
+	free(message);
 	return 0;	/*La fonction retourne 0 si elle s'execute correctement*/
 }
 
@@ -620,11 +717,11 @@ int Send(){
 
 
 	/*En-tête menu nombre de message*/
-	printf("***************************** MENU ****************************\n");
+	printf("***************************** %sMENU%s ****************************\n", GREEN, DEFAULT_COLOR);
 	printf("*                                                             *\n");
-	printf("*                        TMP Messagerie                       *\n");
+	printf("*                        %sTMP Messagerie%s                       *\n", BLUE, DEFAULT_COLOR);
 	printf("*                                                             *\n");
-	printf("*                      Envoie d'un message                    *\n");
+	printf("*                      %sEnvoie d'un message%s                    *\n", GREEN, DEFAULT_COLOR);
 	printf("*                                                             *\n");
 	printf("*                                                             *\n");
 	printf("***************************************************************\n");
@@ -655,13 +752,14 @@ int Send(){
 	message = Reception();	/*On stocke la reception dans la variable message*/
 	sscanf(message, "Reply/%d$*", &rep);	/*On extrait le paramètre de la reponse reçu,
 																			qui correspond à l'état de reception du mail*/
-	if (rep == 303){
+	if (rep == 303){ /*Si le destinataire n'est pas existant sur le serveur, on sort de la fonction*/
 		printf("\n");
 		printf("Destinataire incorrecte, veuillez renseignez un destinataire existant.\n");
 		printf("\n");
 		printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
+		free(message);
 		return 1;
-	} else {
+	} else if (rep == 101){ /*Si le destinataire existe bien sur le serveur*/
 		/*Récupération de l'objet du message à envoyer*/
 		printf("Veuillez rentrer l'objet de votre mail :\n");
 		fgets(mail_objet, 100, stdin);	/*On récupère la saisie du clavier qui est le nombre de
@@ -718,15 +816,21 @@ int Send(){
 			printf("Votre message a été envoyé.\n");
 			printf("\n");
 			printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
+			free(message);
+			free(mail_contenu);
 			return 0;
 		} else {
 			printf("\n");
 			printf("Erreur inconnue.\n");
 			printf("\n");
 			printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
+			free(message);
+			free(mail_contenu);
 			return 1;
 		}
 	}
+	free(message);
+	free(mail_contenu);
 	return 0;	/*La fonction retourne 0 si elle s'execute correctement*/
 }
 
@@ -739,9 +843,9 @@ int Inbox(){
 	/*En-tête menu nombre de message*/
 	printf("***************************** MENU ****************************\n");
 	printf("*                                                             *\n");
-	printf("*                        TMP Messagerie                       *\n");
+	printf("*                        %sTMP Messagerie%s                       *\n", BLUE, DEFAULT_COLOR);
 	printf("*                                                             *\n");
-	printf("*                      Nombres de messages                    *\n");
+	printf("*                      %sNombres de messages%s                    *\n", GREEN, DEFAULT_COLOR);
 	printf("*                                                             *\n");
 	printf("*                                                             *\n");
 	printf("***************************************************************\n");
@@ -780,7 +884,29 @@ int Inbox(){
 		printf("\n");
 		printf("Appuyer sur \"Entrée\" pour revenir au Menu Principal.\n");
 	}
-	return 0;	/*La fonction retourne 0 si elle s'execute correctement*/
+	free(message);
+	return num;	/*La fonction retourne 0 si elle s'execute correctement*/
+}
+
+/*_______________________Récupérer le nombre de message dans BAL_________________________*/
+int Inbox_spy(){
+	/*Déclaration des variables*/
+	char *message = (char *) calloc(50, sizeof (char));
+	int num = 0; /*Permet de stocker le nombre de message*/
+	/*Envoie de la requête "Inbox$*" pour demander le nombre de message sur le serveur*/
+	/*Test de l'émission de l'envoie de la requete*/
+	if(Emission("Inbox/$*\n")!=1) {
+		printf("Erreur d'emission lors de l'envoie de Inbox.\n");	/*Affichage message d'erreur*/
+		return 1;
+	}
+
+	/*Réception de la réponse du serveur*/
+	bzero(message, 50);
+	message = Reception();	/*On stocke la reception dans la variable message*/
+	sscanf(message,"Number/%d$*",&num); /*On extrait le paramètre de la reponse reçu,
+																								qui correspond au nombre de messages*/
+	free(message);
+	return num;	/*La fonction retourne 0 si elle s'execute correctement*/
 }
 
 /*____________________________________Déconnexion________________________________________*/
@@ -788,22 +914,23 @@ int Disconnect(){
 	int choix = 0;
 	do {
 		/*En-tête menu déconnexion*/
-		printf("***************************** MENU ****************************\n");
+		printf("***************************** %sMENU%s ****************************\n", GREEN, DEFAULT_COLOR);
 		printf("*                                                             *\n");
-	  printf("*                        TMP Messagerie                       *\n");
+	  printf("*                        %sTMP Messagerie%s                       *\n", BLUE, DEFAULT_COLOR);
 		printf("*                                                             *\n");
-		printf("*                          Déconnexion                        *\n");
+		printf("*                          %sDéconnexion%s                        *\n", GREEN, DEFAULT_COLOR);
 		printf("*                                                             *\n");
 		printf("*                                                             *\n");
 		printf("***************************************************************\n");
-		printf("*************** 1 - Pour confirmer votre déconnexion **********\n");
-		printf("*************** 2 - Pour revenir au menu précédent  ***********\n");
+		printf("*************** %s1 - Pour confirmer votre déconnexion%s **********\n", RED, DEFAULT_COLOR);
+		printf("*************** %s2 - Pour revenir au menu précédent%s  ***********\n", YELLOW, DEFAULT_COLOR);
 		printf("***************************************************************\n");
 		printf("*** Copyright FFSSSD ************************** Version 1.0 ***\n");
 		printf("\n");
 
 		choix = Choix(); /*Récupération du choix de l'utilisateur*/
 		if (choix == 1){	/*Si son choix est 1, on ferme la connexion avec le serveur*/
+			Emission("Disconnect/$*\n");
 			Terminaison();
 			printf("Vous êtes maintenant déconnecté\n");
 			return 0;
